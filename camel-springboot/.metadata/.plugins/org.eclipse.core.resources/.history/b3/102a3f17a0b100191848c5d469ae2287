@@ -1,0 +1,8 @@
+package com.lakwarus.sample.pojo;
+
+public class CustomException extends Exception{
+	public CustomException() {
+		super(" Custome Exception");
+	}
+
+}

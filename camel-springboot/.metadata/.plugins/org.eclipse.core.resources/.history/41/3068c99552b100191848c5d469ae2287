@@ -1,0 +1,85 @@
+package com.lakwarus.sample.pojo;
+
+import java.util.HashMap;
+import java.util.Map;
+import org.apache.camel.Exchange;
+import com.fasterxml.jackson.core.JsonParseException;
+import org.apache.camel.Processor;
+import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.model.rest.RestBindingMode;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Component;
+
+@SpringBootApplication
+public class SpringbootCamelRestdslApplication {
+
+	// Order management is done using an in-memory map.
+	Map<String, Order> objectmap;
+
+	public SpringbootCamelRestdslApplication() {
+		objectmap = new HashMap<String, Order>();
+	}
+
+	public static void main(String[] args) {
+		SpringApplication.run(SpringbootCamelRestdslApplication.class, args);
+	}
+
+	@Component
+	class OrderRoute extends RouteBuilder {
+
+		@Override
+		public void configure() throws Exception {
+
+			restConfiguration().component("servlet").bindingMode(RestBindingMode.json);
+
+			rest("/ordermgt").consumes("application/json").post("/order").type(Order.class).to("direct:addOrder");
+
+			rest("/ordermgt").consumes("application/json").get("/order/{orderId}").to("direct:getOrder");
+
+			onException(Exception.class).handled(true).process(new Processor() {
+
+				public void process(Exchange exchange) throws Exception {
+					System.out.println("handling ex");
+					Exception ex = (Exception) exchange.getProperty(Exchange.EXCEPTION_CAUGHT);
+					log.info(" Exception : " + ex.getMessage());
+					exchange.getIn().setBody(" Exception Occured :" + ex.getMessage());
+				}
+			});
+
+			from("direct:addOrder").doTry().process(new Processor() {
+
+				@Override
+				public void process(Exchange exchange) throws JsonParseException {
+
+					Order order = exchange.getIn().getBody(Order.class);
+					String orderId = order.getId();
+					System.out.println(" Order ID : " + orderId);
+					Order or = exchange.getIn().getBody(Order.class);
+					objectmap.put(orderId, or);
+
+					System.out.println(" AAAA :" + objectmap.get(orderId).getName());
+				}
+			}).doCatch(Exception.class).process(new Processor() {
+				public void process(Exchange exchange) throws Exception {
+					System.out.println("handling ex");
+				}
+			}).log("Received body ");
+
+			from("direct:getOrder").process(new Processor() {
+
+				@Override
+				public void process(Exchange exchange) throws JsonParseException {
+
+					String orderId = exchange.getIn().getHeader("orderId", String.class);
+
+					Order or = objectmap.get(orderId);
+
+					System.out.println(" Order Name :" + or.getName());
+
+				}
+			});
+		}
+	}
+
+}

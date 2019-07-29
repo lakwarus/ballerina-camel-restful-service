@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;com.lakwarus.sample.pojo.CustomException&apos; to &apos;OrderValidationException&apos;&#x0A;- Original project: &apos;springboot-camel-restdsl&apos;&#x0A;- Original element: &apos;com.lakwarus.sample.pojo.CustomException&apos;&#x0A;- Renamed element: &apos;com.lakwarus.sample.pojo.OrderValidationException&apos;&#x0A;- Update references to refactored element&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;CustomException&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src\/main\/java&lt;com.lakwarus.sample.pojo{CustomException.java[CustomException" matchStrategy="1" name="OrderValidationException" qualified="false" references="true" similarDeclarations="false" stamp="1564363675596" textual="false" version="1.0"/>
+</session>
