@@ -21,6 +21,8 @@ To understand how we can build a RESTful microservice, let’s consider a real-w
 
 The following diagram illustrates all the required functionality of the Order Management RESTful microservice that we are going to build.
 
+![order mgt](https://github.com/lakwarus/ballerina-camel-springboot-restful-service/blob/master/images/order-mgt.png)
+
 # SpringBoot with Apache Camel
 Here we will create a Camel REST microservice using REST DSL, further we will use Camel Servlet to expose the REST API.
 
