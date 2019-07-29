@@ -458,7 +458,9 @@ TODO
 - Explain the Ballerina advantage of @Docker and @Kubernetes annotation
 - Explain the Ballerina advantage of JSON handling
 - Explain the Ballerina advantage of error handling
+- Explain the Ballerina advantage of sequence diagram
 - Explain Spring+Camel advantage/pain of multiple chose for REST DSL
+- Explain Spring+Camel advantage of available contents
 
 # References
 - http://www.javaoutofbounds.com/apache-camel-springboot-rest-api-example/
