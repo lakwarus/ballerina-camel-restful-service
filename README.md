@@ -39,3 +39,44 @@ Start with STS, first we need to create a maven project with dependencies. Proje
 - GroupID: com.lakwarus
 - ArtifactID: springboot-camel-restdsl
 - Package: com.lakwarus.sample.pojo
+
+TODO - image
+
+After clicking Next, you would get Spring starter dependency window. Lookup for Web and Camel and select Web and Apache Camel option respectively like on below screen and click Finish.
+
+TODO - image
+
+If everything went fine you should end up with the below project in the workspace.
+
+TODO - image
+
+Now we need to add all the required dependencies into the pom.xml
+
+```xml
+<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-spring-boot-starter</artifactId>
+			<version>2.24.0</version>
+		</dependency>
+	  	<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-servlet-starter</artifactId>
+			<version>2.24.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jackson</artifactId>
+			<version>2.24.0</version>
+		</dependency>
+		<dependency>
+ 			<groupId>org.apache.camel</groupId>
+  			<artifactId>camel-jsonpath</artifactId>
+			<version>2.24.0</version>
+		</dependency>
+	</dependencies>
+```
