@@ -118,7 +118,7 @@ camel.component.servlet.mapping.context-path=/*
 
 To configure REST DSL to use the Servlet component implementation we have used restConfiguration().component(“servlet”). When we add bindingMode(RestBindingMode.json) we tell Spring to format the incoming and outgoing POJOs to JSON format. 
 
-```springBoot
+```java
 restConfiguration().component("servlet").bindingMode(RestBindingMode.json);
 
             onException(Exception.class).handled(true).process(new Processor() {
@@ -148,7 +148,7 @@ restConfiguration().component("servlet").bindingMode(RestBindingMode.json);
 
 I have created two resources classes (Order.class and Status.class) which use to format incoming and outgoing POJOs to JSON format.  
 
-```code
+```java
 package com.lakwarus.sample.pojo;
 
 
@@ -186,7 +186,7 @@ public class Order {
 }
 ```
 
-```code
+```java
 package com.lakwarus.sample.pojo;
 
 public class Status {
@@ -218,7 +218,7 @@ The complete main() application class will now look at how we can add the camel 
 
 Let's look at the implementation of create order functionality first.
 
-```code
+```java
 // Resource that handles the HTTP POST requests that are directed to the path
 // '/order' to create a new Order.            rest("/ordermgt").consumes("application/json").post("/order").type(Order.class).to("direct:addOrder");
 
@@ -283,8 +283,8 @@ TODO - explain Camel route and error handling
 
 Following code, block shows how I implemented get order functionality.
 
-```code
-// Resource that handles the HTTP GET requests that are directed to a specific
+```java
+	    // Resource that handles the HTTP GET requests that are directed to a specific
             // order using path '/order/<orderId>'.
             rest("/ordermgt").get("/order/{orderId}").to("direct:getOrder");
 
