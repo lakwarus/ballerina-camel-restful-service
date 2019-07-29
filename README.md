@@ -19,3 +19,22 @@ To understand how we can build a RESTful microservice, let’s consider a real-w
 - Delete an order
 
 The following diagram illustrates all the required functionality of the Order Management RESTful microservice that we are going to build.
+
+# SpringBoot with Apache Camel
+Here we will create a Camel REST microservice using REST DSL, further we will use Camel Servlet to expose the REST API.
+
+## Prerequisites
+- JDK 1.8+
+- Maven 3.2+
+- Your favorite IDE, I have used Spring Tool Suite (STS)
+
+### Optional requirements
+- Docker
+- Kubernetes
+- TODO - Camel-K?
+
+## Setting up the project
+Start with STS, first we need to create a maven project with dependencies. Project details I have used;
+- GroupID: com.lakwarus
+- ArtifactID: springboot-camel-restdsl
+- Package: com.lakwarus.sample.pojo
