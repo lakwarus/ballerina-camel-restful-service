@@ -116,4 +116,215 @@ Camel has a way to set CamelServlet registration from Camel version 2.19.0. It i
 camel.component.servlet.mapping.context-path=/*
 ```
 
+To configure REST DSL to use the Servlet component implementation we have used restConfiguration().component(“servlet”). When we add bindingMode(RestBindingMode.json) we tell Spring to format the incoming and outgoing POJOs to JSON format. 
+
+```code
+restConfiguration().component("servlet").bindingMode(RestBindingMode.json);
+
+            onException(Exception.class).handled(true).process(new Processor() {
+
+                public void process(Exchange exchange) throws Exception {
+                    Exception ex = (Exception) exchange.getProperty(Exchange.EXCEPTION_CAUGHT);
+
+                    if (ex instanceof JsonEOFException) {
+                        Status status = new Status();
+                        status.setOrderId("null");
+                        status.setStatus("Malformed JSON recevied");
+
+                        // Create response message.
+                        exchange.getOut().setBody(status, Status.class);
+                    } else {
+                        Status status = new Status();
+                        status.setOrderId("null");
+                        status.setStatus(" Error occured while proceesing the request !!!");
+
+                        // Create response message.
+                        exchange.getOut().setBody(status, Status.class);
+                    }
+
+                }
+            });
+```
+
+I have created two resources classes (Order.class and Status.class) which use to format incoming and outgoing POJOs to JSON format.  
+
+```code
+package com.lakwarus.sample.pojo;
+
+
+public class Order {
+
+	private String id;
+	private String name;
+	private String description;
+	
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id){
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return this.description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+}
+```
+
+```code
+package com.lakwarus.sample.pojo;
+
+public class Status {
+	private String status;
+	private String orderId;
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+}
+```
+
+TODO - explain OnException handling
+
+The complete main() application class will now look at how we can add the camel route. You can also define Camel Route in a separate class with @Component annotation.
+
+Let's look at the implementation of create order functionality first.
+
+```code
+// Resource that handles the HTTP POST requests that are directed to the path
+// '/order' to create a new Order.            rest("/ordermgt").consumes("application/json").post("/order").type(Order.class).to("direct:addOrder");
+
+            from("direct:addOrder").doTry().process(new Processor() {
+
+                @Override
+                public void process(Exchange exchange) throws Exception {
+
+                    Order order = exchange.getIn().getBody(Order.class);
+                    String orderId = order.getId();
+                    if (orderId == null) {
+                        throw new OrderValidationException();
+                    }
+                    objectmap.put(orderId, order);
+
+                    Status status = new Status();
+                    status.setOrderId(orderId);
+                    status.setStatus("Order Created!");
+
+                    // Create response message.
+                    exchange.getOut().setBody(status, Status.class);
+
+                    // Set 201 Created status code in the response message.
+                    exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 201);
+                    // Set 'Location' header in the response message.
+                    // This can be used by the client to locate the newly added order.
+                    exchange.getOut().setHeader("Location", "http://localhost:8080/ordermgt/order/" + orderId);
+                }
+            }).doCatch(OrderValidationException.class).process(new Processor() {
+
+                public void process(Exchange exchange) throws Exception {
+
+                    Status status = new Status();
+                    status.setOrderId("null");
+                    status.setStatus("Order Id is Null !!");
+
+                    // Create response message.
+                    exchange.getOut().setBody(status, Status.class);
+                    exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 400);
+
+                }
+            }).log("AddOrder error : Invalid JSON recevied!").doCatch(Exception.class).process(new Processor() {
+
+                public void process(Exchange exchange) throws Exception {
+                    if (exchange.getOut().getBody(Order.class) == null) {
+                        Status status = new Status();
+                        status.setOrderId("null");
+                        status.setStatus("JSON payload is empty!");
+
+                        // Create response message.
+                        exchange.getOut().setBody(status, Status.class);
+                        exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 400);
+                    }
+
+                }
+            }).log("AddOrder error : JSON payload is empty!");
+```
+
+We can implement the business logic of each resource depending on your requirements. For simplicity, I used an in-memory map to keep all the order details.
+
+TODO - explain Camel route and error handling
+
+Following code, block shows how I implemented get order functionality.
+
+```code
+// Resource that handles the HTTP GET requests that are directed to a specific
+            // order using path '/order/<orderId>'.
+            rest("/ordermgt").get("/order/{orderId}").to("direct:getOrder");
+
+            from("direct:getOrder").doTry().process(new Processor() {
+
+                @Override
+                public void process(Exchange exchange) {
+
+                    // Find the requested order from the map and retrieve it in JSON format.
+                    String orderId = exchange.getIn().getHeader("orderId", String.class);
+                    Order order = objectmap.get(orderId);
+
+                    if (order == null) {
+
+                        Status status = new Status();
+                        status.setOrderId(orderId);
+                        status.setStatus("Get order error : " + orderId + " cannot be found!");
+
+                        exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 400);
+                    } else {
+
+                        exchange.getOut().setBody(order, Order.class);
+                        exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 200);
+                    }
+
+                }
+            }).doCatch(Exception.class).process(new Processor() {
+
+                public void process(Exchange exchange) throws Exception {
+
+                    Status status = new Status();
+                    status.setOrderId("null");
+                    status.setStatus("Internal server error!");
+
+                    exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 500);
+
+                }
+            }).log("Get order error : error while processing getOrder");
+```
+
+In the same way, I have implemented update-order and the delete-order functionalities and full source code of the application can be found here. 
+
 
