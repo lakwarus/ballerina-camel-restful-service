@@ -221,8 +221,9 @@ The complete main() application class will now look at how we can add the camel 
 Let's look at the implementation of create order functionality first.
 
 ```java
-// Resource that handles the HTTP POST requests that are directed to the path
-// '/order' to create a new Order.            rest("/ordermgt").consumes("application/json").post("/order").type(Order.class).to("direct:addOrder");
+	    // Resource that handles the HTTP POST requests that are directed to the path
+	    // '/order' to create a new Order.         
+	    rest("/ordermgt").consumes("application/json").post("/order").type(Order.class).to("direct:addOrder");
 
             from("direct:addOrder").doTry().process(new Processor() {
 
