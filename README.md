@@ -334,7 +334,7 @@ Open SpringbootCamelRestdslApiApplication class and Run as Java Application or S
 
 To test the functionality of the orderMgt RESTFul microservice, send HTTP requests for each order management operation. Following are sample cURL commands that you can use to test each operation of the order management service.
 
-**Create order
+#### Create order
 
 ```bash
 $ curl -v -X POST -d \
@@ -361,7 +361,7 @@ $ curl -v -X POST -d \
 {"status":"Order Created!","orderId":"100500"}
 ```
 
-**Retrieve Order
+#### Retrieve Order
 
 ```bash
 $ curl -v "http://localhost:9090/ordermgt/order/100500"
@@ -382,7 +382,7 @@ $ curl -v "http://localhost:9090/ordermgt/order/100500"
 {"id":"100500","name":"XYZ","Description":"Sample order."}
 ```
 
-**Update Order
+#### Update Order
 
 ```bash
 $ curl -X PUT -d '{ "ID": "100500", "Name": "XYZ", "Updated Description": "Sample order."}'' \
@@ -407,7 +407,7 @@ $ curl -X PUT -d '{ "ID": "100500", "Name": "XYZ", "Updated Description": "Sampl
 {"id":"100500","name":"XYZ","Updated Description":"Sample order."}
 ```
 
-**Delete Order
+#### Delete Order
 
 ```bash
 $ curl -X DELETE "http://localhost:9090/ordermgt/order/100500"
@@ -435,12 +435,12 @@ TODO - Camek-K
 
 ## Prerequisites
 
-Ballerina Distribution
-A Text Editor or an IDE. I have used VSCode with Ballerina VSCode plugin
+- Ballerina Distribution
+- A Text Editor or an IDE. I have used VSCode with Ballerina VSCode plugin
 
 ### Optional requirements
-Docker
-Kubernetes
+- Docker
+- Kubernetes
 
 ## Setting up the project
 
@@ -452,15 +452,15 @@ Kubernetes
 ## Deployment
 # Summary
 TODO 
-Explain the Spring+Camel pain points of readability
-Explain the Spring+Camel pain points of exception handling
-Explain the Spring+Camel pain points of dependency management
-Explain the Ballerina advantage of @Docker and @Kubernetes annotation
-Explain the Ballerina advantage of JSON handling
-Explain the Ballerina advantage of error handling
-Explain Spring+Camel advantage/pain of multiple chose for REST DSL
+- Explain the Spring+Camel pain points of readability
+- Explain the Spring+Camel pain points of exception handling
+- Explain the Spring+Camel pain points of dependency management
+- Explain the Ballerina advantage of @Docker and @Kubernetes annotation
+- Explain the Ballerina advantage of JSON handling
+- Explain the Ballerina advantage of error handling
+- Explain Spring+Camel advantage/pain of multiple chose for REST DSL
 
-# References :
+# References
 [1] http://www.javaoutofbounds.com/apache-camel-springboot-rest-api-example/
 [2] https://www.javainuse.com/camel/camelException
 [3] https://camel.apache.org/rest-dsl.html
