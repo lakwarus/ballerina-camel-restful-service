@@ -118,7 +118,7 @@ camel.component.servlet.mapping.context-path=/*
 
 To configure REST DSL to use the Servlet component implementation we have used restConfiguration().component(“servlet”). When we add bindingMode(RestBindingMode.json) we tell Spring to format the incoming and outgoing POJOs to JSON format. 
 
-```code
+```springBoot
 restConfiguration().component("servlet").bindingMode(RestBindingMode.json);
 
             onException(Exception.class).handled(true).process(new Processor() {
