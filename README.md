@@ -44,11 +44,11 @@ Start with STS, first we need to create a maven project with dependencies. Proje
 
 After clicking Next, you would get Spring starter dependency window. Lookup for Web and Camel and select Web and Apache Camel option respectively like on below screen and click Finish.
 
-TODO - image
+![Camel-dependancy](https://github.com/lakwarus/ballerina-camel-springboot-restful-service/blob/master/images/Camel-dependancy.png)
 
 If everything went fine you should end up with the below project in the workspace.
 
-TODO - image
+![source-structure](https://github.com/lakwarus/ballerina-camel-springboot-restful-service/blob/master/images/source-structure.png)
 
 Now we need to add all the required dependencies into the pom.xml
 
