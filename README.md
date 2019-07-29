@@ -53,7 +53,7 @@ TODO - image
 Now we need to add all the required dependencies into the pom.xml
 
 ```xml
-<dependencies>
+	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -80,3 +80,21 @@ Now we need to add all the required dependencies into the pom.xml
 		</dependency>
 	</dependencies>
 ```
+
+## Implementation
+
+When we initialized the project, Spring Boot has created SpringbootCamelRestdslApiApplication bootstrap class with main() method to run the application. We will now inject Camel Servlet and Camel route to this class.
+
+```java
+package com.lakwarus.sample.pojo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SpringbootCamelRestdslApplication {
+
+	public SpringbootCamelRestdslApplication() {
+	}
+```
+
