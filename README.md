@@ -85,7 +85,7 @@ Now we need to add all the required dependencies into the pom.xml
 
 ## Implementation
 
-When we initialized the project, Spring Boot has created SpringbootCamelRestdslApiApplication bootstrap class with main() method to run the application. We will now inject Camel Servlet and Camel route to this class.
+When we initialized the project, Spring Boot has created SpringbootCamelRestdslApplication bootstrap class with main() method to run the application. We will now inject Camel Servlet and Camel route to this class.
 
 ```java
 package com.lakwarus.sample.pojo;
