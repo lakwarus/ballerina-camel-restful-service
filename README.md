@@ -461,9 +461,9 @@ TODO
 - Explain Spring+Camel advantage/pain of multiple chose for REST DSL
 
 # References
-[1] http://www.javaoutofbounds.com/apache-camel-springboot-rest-api-example/
-[2] https://www.javainuse.com/camel/camelException
-[3] https://camel.apache.org/rest-dsl.html
-[4] https://ballerina.io/learn/by-guide/restful-service
+- http://www.javaoutofbounds.com/apache-camel-springboot-rest-api-example/
+- https://www.javainuse.com/camel/camelException
+- https://camel.apache.org/rest-dsl.html
+- https://ballerina.io/learn/by-guide/restful-service
 
 
