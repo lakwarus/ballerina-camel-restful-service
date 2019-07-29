@@ -40,7 +40,7 @@ Start with STS, first we need to create a maven project with dependencies. Proje
 - ArtifactID: springboot-camel-restdsl
 - Package: com.lakwarus.sample.pojo
 
- ![SpringBoot project](/images/project.png)
+ ![SpringBoot project](/images/project.png =250x)
 
 
 After clicking Next, you would get Spring starter dependency window. Lookup for Web and Camel and select Web and Apache Camel option respectively like on below screen and click Finish.
