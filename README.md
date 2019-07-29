@@ -327,4 +327,143 @@ Following code, block shows how I implemented get order functionality.
 
 In the same way, I have implemented update-order and the delete-order functionalities and full source code of the application can be found here. 
 
+## Testing
+We can run the RESTful microservice that we developed above, in your local environment. 
+
+Open SpringbootCamelRestdslApiApplication class and Run as Java Application or SpringBoot Application. Check the console tab for application build status. 
+
+To test the functionality of the orderMgt RESTFul microservice, send HTTP requests for each order management operation. Following are sample cURL commands that you can use to test each operation of the order management service.
+
+**Create order
+
+```bash
+$ curl -v -X POST -d \
+    '{ "ID": "100500", "Name": "XYZ", "Description": "Sample order."}' \
+    "http://localhost:8080/ordermgt/order" -H "Content-Type:application/json"
+
+* TCP_NODELAY set
+* Connected to localhost (::1) port 8080 (#0)
+> POST /ordermgt/order HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/7.54.0
+> Accept: */*
+> Content-Type:application/json
+> Content-Length: 64
+> 
+* upload completely sent off: 64 out of 64 bytes
+< HTTP/1.1 201 
+< Location: http://localhost:8080/ordermgt/order/100500
+< Content-Type: application/json
+< Transfer-Encoding: chunked
+< Date: Mon, 29 Jul 2019 19:00:20 GMT
+< 
+* Connection #0 to host localhost left intact
+{"status":"Order Created!","orderId":"100500"}
+```
+
+**Retrieve Order
+
+```bash
+$ curl -v "http://localhost:9090/ordermgt/order/100500"
+
+* TCP_NODELAY set
+* Connected to localhost (::1) port 8080 (#0)
+> GET /ordermgt/order/100500 HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/7.54.0
+> Accept: */*
+> 
+< HTTP/1.1 200 
+< Content-Type: application/json
+< Transfer-Encoding: chunked
+< Date: Mon, 29 Jul 2019 19:02:04 GMT
+< 
+* Connection #0 to host localhost left intact
+{"id":"100500","name":"XYZ","Description":"Sample order."}
+```
+
+**Update Order
+
+```bash
+$ curl -X PUT -d '{ "ID": "100500", "Name": "XYZ", "Updated Description": "Sample order."}'' \
+    "http://localhost:8080/ordermgt/order/100500" -H "Content-Type:application/json"
+
+* TCP_NODELAY set
+* Connected to localhost (::1) port 8080 (#0)
+> PUT /ordermgt/order/100500 HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/7.54.0
+> Accept: */*
+> Content-Type:application/json
+> Content-Length: 71
+> 
+* upload completely sent off: 71 out of 71 bytes
+< HTTP/1.1 200 
+< Content-Type: application/json
+< Transfer-Encoding: chunked
+< Date: Mon, 29 Jul 2019 19:06:47 GMT
+< 
+* Connection #0 to host localhost left intact
+{"id":"100500","name":"XYZ","Updated Description":"Sample order."}
+```
+
+**Delete Order
+
+```bash
+$ curl -X DELETE "http://localhost:9090/ordermgt/order/100500"
+
+* TCP_NODELAY set
+* Connected to localhost (::1) port 8080 (#0)
+> DELETE /ordermgt/order/100500 HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/7.54.0
+> Accept: */*
+> 
+< HTTP/1.1 200 
+< Content-Type: application/json
+< Transfer-Encoding: chunked
+< Date: Mon, 29 Jul 2019 19:08:13 GMT
+< 
+* Connection #0 to host localhost left intact
+{"status":"Order deleted!","orderId":"100500"}
+```
+
+## Deployment
+TODO - Camek-K
+
+# Ballerina
+
+## Prerequisites
+
+Ballerina Distribution
+A Text Editor or an IDE. I have used VSCode with Ballerina VSCode plugin
+
+### Optional requirements
+Docker
+Kubernetes
+
+## Setting up the project
+
+## Implementation
+
+## Testing
+
+
+## Deployment
+# Summary
+TODO 
+Explain the Spring+Camel pain points of readability
+Explain the Spring+Camel pain points of exception handling
+Explain the Spring+Camel pain points of dependency management
+Explain the Ballerina advantage of @Docker and @Kubernetes annotation
+Explain the Ballerina advantage of JSON handling
+Explain the Ballerina advantage of error handling
+Explain Spring+Camel advantage/pain of multiple chose for REST DSL
+
+# References :
+[1] http://www.javaoutofbounds.com/apache-camel-springboot-rest-api-example/
+[2] https://www.javainuse.com/camel/camelException
+[3] https://camel.apache.org/rest-dsl.html
+[4] https://ballerina.io/learn/by-guide/restful-service
+
 
