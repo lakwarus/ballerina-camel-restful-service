@@ -33,6 +33,30 @@ public class SpringbootCamelRestdslApplication {
 		public void configure() throws Exception {
 
 			restConfiguration().component("servlet").bindingMode(RestBindingMode.json);
+			
+			onException(Exception.class).handled(true).process(new Processor() {
+
+				public void process(Exchange exchange) throws Exception {
+					Exception ex = (Exception) exchange.getProperty(Exchange.EXCEPTION_CAUGHT);
+
+					if (ex instanceof JsonEOFException) {
+						Status status = new Status();
+						status.setOrderId("null");
+						status.setStatus("Malformed JSON recevied");
+
+						// Create response message.
+						exchange.getOut().setBody(status, Status.class);
+					} else {
+						Status status = new Status();
+						status.setOrderId("null");
+						status.setStatus(" Error occured while proceesing the request !!!");
+
+						// Create response message.
+						exchange.getOut().setBody(status, Status.class);
+					}
+
+				}
+			});
 
 			// Resource that handles the HTTP POST requests that are directed to the path
 			// '/order' to create a new Order.
@@ -219,30 +243,6 @@ public class SpringbootCamelRestdslApplication {
 
 				}
 			}).log("Delete order error : error while processing deleteOrder");
-
-			onException(Exception.class).handled(true).process(new Processor() {
-
-				public void process(Exchange exchange) throws Exception {
-					Exception ex = (Exception) exchange.getProperty(Exchange.EXCEPTION_CAUGHT);
-
-					if (ex instanceof JsonEOFException) {
-						Status status = new Status();
-						status.setOrderId("null");
-						status.setStatus("Malformed JSON recevied");
-
-						// Create response message.
-						exchange.getOut().setBody(status, Status.class);
-					} else {
-						Status status = new Status();
-						status.setOrderId("null");
-						status.setStatus(" Error occured while proceesing the request !!!");
-
-						// Create response message.
-						exchange.getOut().setBody(status, Status.class);
-					}
-
-				}
-			});
 
 		}
 	}
