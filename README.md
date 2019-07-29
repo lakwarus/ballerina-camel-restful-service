@@ -98,3 +98,22 @@ public class SpringbootCamelRestdslApplication {
 	}
 ```
 
+Apache Camel offers a REST styled DSL which can be used with Java or XML. The intention is to allow end-users to define REST services using a REST-style with verbs such as GET, POST, DELETE etc. In Camel we can use multiple components to implement Rest DSL. The following list is the Camel components which support the Rest DSL.
+- camel-coap
+- camel-netty-http (also supports Swagger Java)
+- camel-netty4-http (also supports Swagger Java)
+- camel-jetty (also supports Swagger Java)
+- camel-restlet (also supports Swagger Java)
+- camel-servlet (also supports Swagger Java)
+- camel-spark-rest (also supports Swagger Java from Camel 2.17)
+- camel-undertow (also supports Swagger Java from Camel 2.17)
+
+I have used camel-servlet REST DSL which acts as façade for REST endpoints.
+
+Camel has a way to set CamelServlet registration from Camel version 2.19.0. It is default registered at “/camel” endpoint which you can optionally overwrite. I have overwritten it to /*. Edit src/main/resources/application.properties and add the below property.
+
+```
+camel.component.servlet.mapping.context-path=/*
+```
+
+
