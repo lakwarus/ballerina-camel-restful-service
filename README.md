@@ -119,7 +119,7 @@ Camel has a way to set CamelServlet registration from Camel version 2.19.0. It i
 camel.component.servlet.mapping.context-path=/*
 ```
 
-To configure REST DSL to use the Servlet component implementation I have used restConfiguration().component(“servlet”). When I add bindingMode(RestBindingMode.json) it tell Spring to format the incoming and outgoing POJOs to JSON format. 
+To configure REST DSL to use the Servlet component implementation I have used restConfiguration().component(“servlet”). Then I add bindingMode(RestBindingMode.json) tell Spring to format the incoming and outgoing POJOs to JSON format. 
 
 ```java
 restConfiguration().component("servlet").bindingMode(RestBindingMode.json);
