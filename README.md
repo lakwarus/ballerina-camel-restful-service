@@ -111,7 +111,7 @@ Apache Camel offers a REST styled DSL which can be used with Java or XML. The in
 - camel-spark-rest (also supports Swagger Java from Camel 2.17)
 - camel-undertow (also supports Swagger Java from Camel 2.17)
 
-I have used camel-servlet REST DSL which acts as façade for REST endpoints.
+I have used camel-servlet REST DSL which acts as facade for REST endpoints.
 
 Camel has a way to set CamelServlet registration from Camel version 2.19.0. It is default registered at “/camel” endpoint which you can optionally overwrite. I have overwritten it to /*. Edit src/main/resources/application.properties and add the below property.
 
