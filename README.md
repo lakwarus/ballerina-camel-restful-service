@@ -289,7 +289,7 @@ We can implement the business logic of each resource depending on our requiremen
 
 For each induvidual route I have used Do Try blocks to handle exceptions. This approach is similar to the Java try catch block. So the thrown exception will be immediately caught and the message wont keep on retrying. Here I have defined a custom Camel exceptions to handle order validation based exceptions. We have to use multiple Do-Try blocks to handle specific type of exceptions.  
 
-Following code, block shows how I implemented get order functionality.
+Following code block shows implementation of get order functionality.
 
 ```java
 	    // Resource that handles the HTTP GET requests that are directed to a specific
@@ -333,7 +333,7 @@ Following code, block shows how I implemented get order functionality.
             }).log("Get order error : error while processing getOrder");
 ```
 
-In the same way, I have implemented update-order and the delete-order functionalities and full source code of the application can be found here. 
+Same way, I have implemented update-order and the delete-order functionalities and full source code of the application can be found [here](https://github.com/lakwarus/ballerina-camel-springboot-restful-microservice/blob/master/springboot-camel-restdsl/src/main/java/com/lakwarus/sample/pojo/SpringbootCamelRestdslApplication.java). 
 
 ## Testing
 We can run the RESTful microservice that we developed above, in your local environment. 
