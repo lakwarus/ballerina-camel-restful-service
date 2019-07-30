@@ -217,9 +217,9 @@ public class Status {
 
 TODO - explain OnException handling
 
-The complete main() application class will now look at how we can add the camel route. You can also define Camel Route in a separate class with @Component annotation.
+The complete main() application class let's look at how can add the camel route. We can also define Camel Route in a separate class with @Component annotation.
 
-Let's look at the implementation of create order functionality first.
+Here is the implementation of create order functionality.
 
 ```java
 	    // Resource that handles the HTTP POST requests that are directed to the path
