@@ -219,7 +219,7 @@ The exception handling for Apache camel can be implemented in 2 ways.
 * Using Do Try block
 * Using OnException block
 
-The OnException applies to all the routes. I have defined OnException block as a separate block from the routes to handle exeptions on malform JSON requests and any other connection issues. 
+The OnException applies to all the routes. I have defined OnException block as a separate block from the routes to handle exceptions on malform JSON requests and any other connection issues. 
 
 To complete our application let's look at how can add the camel route. Notice that in our REST service we route directly to a Camel endpoint using the to(). This is because the Rest DSL has a short-hand for routing directly to an endpoint using to(). An alternative is to embed a Camel route directly using route()
 
@@ -285,9 +285,9 @@ Here is the full implementation of create order functionality.
             }).log("AddOrder error : JSON payload is empty!");
 ```
 
-We can implement the business logic of each resource depending on your requirements. For simplicity, I used an in-memory map to keep all the order details.
+We can implement the business logic of each resource depending on our requirements. For simplicity, I used an in-memory map to keep all the order details. (In the real world we should use some Database service to store orders)
 
-TODO - explain Camel route and error handling
+For each induvidual route I have used Do Try blocks to handle exceptions. This approach is similar to the Java try catch block. So the thrown exception will be immediately caught and the message wont keep on retrying. Here I have defined a custom Camel exceptions to handle order validation based exceptions. We have to use multiple Do-Try blocks to handle specific type of exceptions.  
 
 Following code, block shows how I implemented get order functionality.
 
