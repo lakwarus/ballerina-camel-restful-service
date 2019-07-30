@@ -96,8 +96,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SpringbootCamelRestdslApplication {
 
-	public SpringbootCamelRestdslApplication() {
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SpringbootCamelRestdslApplication.class, args);
+    }
 ```
 
 Apache Camel offers a REST styled DSL which can be used with Java or XML. The intention is to allow end-users to define REST services using a REST-style with verbs such as GET, POST, DELETE etc. In Camel we can use multiple components to implement Rest DSL. The following list is the Camel components which support the Rest DSL.
