@@ -336,7 +336,7 @@ Following code block shows implementation of get order functionality.
 Same way, I have implemented update-order and the delete-order functionalities and full source code of the application can be found [here](https://github.com/lakwarus/ballerina-camel-springboot-restful-microservice/blob/master/springboot-camel-restdsl/src/main/java/com/lakwarus/sample/pojo/SpringbootCamelRestdslApplication.java). 
 
 ## Testing
-We can run the RESTful microservice that we developed above, in your local environment. 
+We can run the RESTful microservice that we developed above, in our local environment. 
 
 Open SpringbootCamelRestdslApiApplication class and Run as Java Application or SpringBoot Application. Check the console tab for application build status. 
 
