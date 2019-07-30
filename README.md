@@ -215,17 +215,15 @@ public class Status {
 }
 ```
 
-TODO - explain OnException handling
-
 The exception handling for Apache camel can be implemented in 2 ways.
 * Using Do Try block
 * Using OnException block
 
 The OnException applies to all the routes. I have defined OnException block as a separate block from the routes.
 
-The complete main() application class let's look at how can add the camel route. We can also define Camel Route in a separate class with @Component annotation.
+To complete the application class let's look at how can add the camel route. Notice that in our REST service we route directly to a Camel endpoint using the to(). This is because the Rest DSL has a short-hand for routing directly to an endpoint using to(). An alternative is to embed a Camel route directly using route()
 
-Here is the implementation of create order functionality.
+Here is the full implementation of create order functionality.
 
 ```java
 	    // Resource that handles the HTTP POST requests that are directed to the path
