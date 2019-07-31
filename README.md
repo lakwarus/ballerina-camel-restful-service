@@ -452,8 +452,30 @@ TODO - Camek-K
 
 ## Setting up the project
 
+Ballerina project is a directory that atomically manages a collection of modules and programs. We can create a project from any folder by using following command.
+
+```bash
+ballerina init [-i]
+```
+
+The init command initializes a simple project with a module inside of it. If the folder where this command is run has Ballerina source files or subfolders, those will be placed into the new project.
+
+I have created `ballerina-restful-service` folder and initialized with ballerina init. `order_service.bal` is the source file of my order management application.
+
 ## Implementation
 
+Unlike Java, Ballerina source itself can import modules. Since I am going to create a HTTP Restful service I have imported the ballerina/http module. Endpoints and Services are first-class constructs in Ballerina. I have created `httpListener` endpoint and set listener port as 8080. Then I have created  `orderMgt` service and set it to listen on `httpListener` endpoint. 
+
+```ballerina
+import ballerina/http;
+
+listener http:Listener httpListener = new(8080);
+
+@http:ServiceConfig { basePath: "/ordermgt" }
+service orderMgt on httpListener {
+
+    resource function getOrder(http:Caller caller, http:Request req, string orderId) { 
+```
 ## Testing
 
 
