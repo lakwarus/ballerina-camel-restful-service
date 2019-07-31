@@ -1,6 +1,5 @@
 import ballerina/http;
 import ballerina/log;
-import ballerina/io;
 
 listener http:Listener httpListener = new(8080);
 
@@ -18,9 +17,9 @@ service orderMgt on httpListener {
         methods: ["GET"],
         path: "/order/{orderId}"
     }
-    resource function findOrder(http:Caller caller, http:Request req, string orderId) {
+    resource function getOrder(http:Caller caller, http:Request req, string orderId) {
         // Find the requested order from the map and retrieve it in JSON format.
-        json? payload = ordersMap[orderId];
+        json payload = ordersMap[orderId];
         http:Response response = new;
         if (payload == null) {
             payload = { status: "Order cannot be found!", orderId: orderId };
@@ -47,8 +46,8 @@ service orderMgt on httpListener {
         var orderReq = req.getJsonPayload();
         if (orderReq is json) {
             
-            json orderIdJ = orderReq.id;
-            if (orderIdJ == null) {
+            json orderIdJson = orderReq.id;
+            if (orderIdJson == null) {
 
                 // Create response message.
                 json payload = { status: "OrderId is Empty!", orderId: "null" };
@@ -56,8 +55,8 @@ service orderMgt on httpListener {
                 response.setJsonPayload(untaint payload);
             } else {
 
-                string orderId = orderIdJ.toString();
-                
+                string orderId = orderIdJson.toString();
+
                 // Find the duplicate orders
                 json existingOrder = ordersMap[orderId];
 
@@ -107,13 +106,12 @@ service orderMgt on httpListener {
 
             // Updating existing order
             if (existingOrder != null) {
-                existingOrder.id = updatedOrder.id;
                 existingOrder.name = updatedOrder.name;
                 existingOrder.description = updatedOrder.description;
                 ordersMap[orderId] = existingOrder;
 
-                // Set the JSON payload to the outgoing response message to the client.
-                response.setJsonPayload(untaint existingOrder);
+                json payload = { status: "Order updated", orderId: orderId };
+                response.setJsonPayload(untaint payload);
 
             } else {
                 json payload = { status: "Order cannot be found!", orderId: orderId };
