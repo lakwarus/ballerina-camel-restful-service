@@ -21,6 +21,8 @@ To understand how we can build a RESTful microservice, let’s consider a real-w
 
 The following diagram illustrates all the required functionality of the Order Management RESTful microservice that we are going to build.
 
+![order mgt](https://github.com/lakwarus/ballerina-camel-springboot-restful-service/blob/master/images/Order-mgt.png)
+
 # SpringBoot with Apache Camel
 Here we will create a Camel REST microservice using REST DSL, further we will use Camel Servlet to expose the REST API.
 
@@ -83,7 +85,7 @@ Now we need to add all the required dependencies into the pom.xml
 
 ## Implementation
 
-When we initialized the project, Spring Boot has created SpringbootCamelRestdslApiApplication bootstrap class with main() method to run the application. We will now inject Camel Servlet and Camel route to this class.
+When we initialized the project, Spring Boot has created SpringbootCamelRestdslApplication bootstrap class with main() method to run the application. We will now inject Camel Servlet and Camel route to this class.
 
 ```java
 package com.lakwarus.sample.pojo;
@@ -94,8 +96,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SpringbootCamelRestdslApplication {
 
-	public SpringbootCamelRestdslApplication() {
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SpringbootCamelRestdslApplication.class, args);
+    }
 ```
 
 Apache Camel offers a REST styled DSL which can be used with Java or XML. The intention is to allow end-users to define REST services using a REST-style with verbs such as GET, POST, DELETE etc. In Camel we can use multiple components to implement Rest DSL. The following list is the Camel components which support the Rest DSL.
@@ -108,7 +111,7 @@ Apache Camel offers a REST styled DSL which can be used with Java or XML. The in
 - camel-spark-rest (also supports Swagger Java from Camel 2.17)
 - camel-undertow (also supports Swagger Java from Camel 2.17)
 
-I have used camel-servlet REST DSL which acts as façade for REST endpoints.
+I have used camel-servlet REST DSL which acts as facade for REST endpoints.
 
 Camel has a way to set CamelServlet registration from Camel version 2.19.0. It is default registered at “/camel” endpoint which you can optionally overwrite. I have overwritten it to /*. Edit src/main/resources/application.properties and add the below property.
 
@@ -116,7 +119,7 @@ Camel has a way to set CamelServlet registration from Camel version 2.19.0. It i
 camel.component.servlet.mapping.context-path=/*
 ```
 
-To configure REST DSL to use the Servlet component implementation we have used restConfiguration().component(“servlet”). When we add bindingMode(RestBindingMode.json) we tell Spring to format the incoming and outgoing POJOs to JSON format. 
+To configure REST DSL to use the Servlet component implementation I have used restConfiguration().component(“servlet”). Then I add bindingMode(RestBindingMode.json) tell Camel to format the incoming and outgoing POJOs to JSON format. Binding to/from JSON to be enabled requires a json capabile data format on the classpath. By default Camel use json-jackson as the data format.
 
 ```java
 restConfiguration().component("servlet").bindingMode(RestBindingMode.json);
@@ -212,15 +215,20 @@ public class Status {
 }
 ```
 
-TODO - explain OnException handling
+The exception handling for Apache camel can be implemented in 2 ways.
+* Using Do Try block
+* Using OnException block
 
-The complete main() application class will now look at how we can add the camel route. You can also define Camel Route in a separate class with @Component annotation.
+The OnException applies to all the routes. I have defined OnException block as a separate block from the routes to handle exceptions on malform JSON requests and any other connection issues. 
 
-Let's look at the implementation of create order functionality first.
+To complete our application let's look at how can add the camel route. Notice that in our REST service we route directly to a Camel endpoint using the to(). This is because the Rest DSL has a short-hand for routing directly to an endpoint using to(). An alternative is to embed a Camel route directly using route()
+
+Here is the full implementation of create order functionality.
 
 ```java
-// Resource that handles the HTTP POST requests that are directed to the path
-// '/order' to create a new Order.            rest("/ordermgt").consumes("application/json").post("/order").type(Order.class).to("direct:addOrder");
+	    // Resource that handles the HTTP POST requests that are directed to the path
+	    // '/order' to create a new Order.         
+	    rest("/ordermgt").consumes("application/json").post("/order").type(Order.class).to("direct:addOrder");
 
             from("direct:addOrder").doTry().process(new Processor() {
 
@@ -277,11 +285,11 @@ Let's look at the implementation of create order functionality first.
             }).log("AddOrder error : JSON payload is empty!");
 ```
 
-We can implement the business logic of each resource depending on your requirements. For simplicity, I used an in-memory map to keep all the order details.
+We can implement the business logic of each resource depending on our requirements. For simplicity, I used an in-memory map to keep all the order details. (In the real world we should use some Database service to store orders)
 
-TODO - explain Camel route and error handling
+For each induvidual route I have used Do Try blocks to handle exceptions. This approach is similar to the Java try catch block. So the thrown exception will be immediately caught and the message wont keep on retrying. Here I have defined a custom Camel exceptions to handle order validation based exceptions. We have to use multiple Do-Try blocks to handle specific type of exceptions.  
 
-Following code, block shows how I implemented get order functionality.
+Following code block shows implementation of get order functionality.
 
 ```java
 	    // Resource that handles the HTTP GET requests that are directed to a specific
@@ -325,10 +333,10 @@ Following code, block shows how I implemented get order functionality.
             }).log("Get order error : error while processing getOrder");
 ```
 
-In the same way, I have implemented update-order and the delete-order functionalities and full source code of the application can be found here. 
+Same way, I have implemented update-order and the delete-order functionalities and full source code of the application can be found [here](https://github.com/lakwarus/ballerina-camel-springboot-restful-microservice/blob/master/springboot-camel-restdsl/src/main/java/com/lakwarus/sample/pojo/SpringbootCamelRestdslApplication.java). 
 
 ## Testing
-We can run the RESTful microservice that we developed above, in your local environment. 
+We can run the RESTful microservice that we developed above, in our local environment. 
 
 Open SpringbootCamelRestdslApiApplication class and Run as Java Application or SpringBoot Application. Check the console tab for application build status. 
 
