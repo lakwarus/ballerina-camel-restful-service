@@ -474,8 +474,69 @@ listener http:Listener httpListener = new(8080);
 @http:ServiceConfig { basePath: "/ordermgt" }
 service orderMgt on httpListener {
 
-    resource function getOrder(http:Caller caller, http:Request req, string orderId) { 
 ```
+A service can have any number of resource functions. We can implement the business logic of each resource depending on your requirements. 
+
+following code block shows implementation of addOrder resource function.
+
+```ballerina
+// Resource that handles the HTTP POST requests that are directed to the path
+    // '/order' to create a new Order.
+    @http:ResourceConfig {
+        methods: ["POST"],
+        path: "/order"
+    }
+    resource function addOrder(http:Caller caller, http:Request req) {
+        http:Response response = new;
+        var orderReq = req.getJsonPayload();
+        if (orderReq is json) {
+            
+            json orderIdJson = orderReq.id;
+            if (orderIdJson == null) {
+
+                // Create response message.
+                json payload = { status: "OrderId is Empty!", orderId: "null" };
+                response.statusCode = 400;
+                response.setJsonPayload(untaint payload);
+            } else {
+
+                string orderId = orderIdJson.toString();
+
+                // Find the duplicate orders
+                json existingOrder = ordersMap[orderId];
+
+                if (existingOrder == null) {
+                    ordersMap[orderId] = orderReq;
+
+                    // Create response message.
+                    json payload = { status: "Order Created.", orderId: orderId };
+                    response.setJsonPayload(untaint payload);
+
+                    // Set 201 Created status code in the response message.
+                    response.statusCode = 201;
+                    // Set 'Location' header in the response message.
+                    // This can be used by the client to locate the newly added order.
+                    response.setHeader("Location", "http://localhost:8080/ordermgt/order/" +
+                            orderId);
+                } else {
+                    response.statusCode = 500;
+                    json payload = { status: "Duplicate Order", orderId: orderId };
+                    response.setJsonPayload(untaint payload);
+                }
+            }
+        } else {
+            response.statusCode = 400;
+            json payload = { status: "Invalid JSON received!", orderId: "null" };
+            response.setJsonPayload(payload);
+        }
+        // Send response to the client.
+        var result = caller->respond(response);
+        if (result is error) {
+            log:printError("Error sending response", err = result);
+        }
+    }
+```
+
 ## Testing
 
 
