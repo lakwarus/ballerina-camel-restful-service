@@ -15,236 +15,236 @@ import com.fasterxml.jackson.core.io.JsonEOFException;
 @SpringBootApplication
 public class SpringbootCamelRestdslApplication {
 
-	// Order management is done using an in-memory map.
-	Map<String, Order> objectmap;
+    // Order management is done using an in-memory map.
+    Map<String, Order> objectmap;
 
-	public SpringbootCamelRestdslApplication() {
-		objectmap = new HashMap<String, Order>();
-	}
+    public SpringbootCamelRestdslApplication() {
+        objectmap = new HashMap<String, Order>();
+    }
 
-	public static void main(String[] args) {
-		SpringApplication.run(SpringbootCamelRestdslApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SpringbootCamelRestdslApplication.class, args);
+    }
 
-	@Component
-	class OrderRoute extends RouteBuilder {
+    @Component
+    class OrderRoute extends RouteBuilder {
 
-		@Override
-		public void configure() throws Exception {
+        @Override
+        public void configure() throws Exception {
 
-			restConfiguration().component("servlet").bindingMode(RestBindingMode.json);
-			
-			onException(Exception.class).handled(true).process(new Processor() {
+            restConfiguration().component("servlet").bindingMode(RestBindingMode.json);
 
-				public void process(Exchange exchange) throws Exception {
-					Exception ex = (Exception) exchange.getProperty(Exchange.EXCEPTION_CAUGHT);
+            onException(Exception.class).handled(true).process(new Processor() {
 
-					if (ex instanceof JsonEOFException) {
-						Status status = new Status();
-						status.setOrderId("null");
-						status.setStatus("Malformed JSON recevied");
+                public void process(Exchange exchange) throws Exception {
+                    Exception ex = (Exception) exchange.getProperty(Exchange.EXCEPTION_CAUGHT);
 
-						// Create response message.
-						exchange.getOut().setBody(status, Status.class);
-					} else {
-						Status status = new Status();
-						status.setOrderId("null");
-						status.setStatus(" Error occured while proceesing the request !!!");
+                    if (ex instanceof JsonEOFException) {
+                        Status status = new Status();
+                        status.setOrderId("null");
+                        status.setStatus("Malformed JSON recevied");
 
-						// Create response message.
-						exchange.getOut().setBody(status, Status.class);
-					}
+                        // Create response message.
+                        exchange.getOut().setBody(status, Status.class);
+                    } else {
+                        Status status = new Status();
+                        status.setOrderId("null");
+                        status.setStatus(" Error occured while proceesing the request !!!");
 
-				}
-			});
+                        // Create response message.
+                        exchange.getOut().setBody(status, Status.class);
+                    }
 
-			// Resource that handles the HTTP POST requests that are directed to the path
-			// '/order' to create a new Order.
-			rest("/ordermgt").consumes("application/json").post("/order").type(Order.class).to("direct:addOrder");
+                }
+            });
 
-			from("direct:addOrder").doTry().process(new Processor() {
+            // Resource that handles the HTTP POST requests that are directed to the path
+            // '/order' to create a new Order.
+            rest("/ordermgt").consumes("application/json").post("/order").type(Order.class).to("direct:addOrder");
 
-				@Override
-				public void process(Exchange exchange) throws Exception {
+            from("direct:addOrder").doTry().process(new Processor() {
 
-					Order order = exchange.getIn().getBody(Order.class);
-					String orderId = order.getId();
-					if (orderId == null) {
-						throw new OrderValidationException();
-					}
-					objectmap.put(orderId, order);
+                @Override
+                public void process(Exchange exchange) throws Exception {
 
-					Status status = new Status();
-					status.setOrderId(orderId);
-					status.setStatus("Order Created!");
+                    Order order = exchange.getIn().getBody(Order.class);
+                    String orderId = order.getId();
+                    if (orderId == null) {
+                        throw new OrderValidationException();
+                    }
+                    objectmap.put(orderId, order);
 
-					// Create response message.
-					exchange.getOut().setBody(status, Status.class);
+                    Status status = new Status();
+                    status.setOrderId(orderId);
+                    status.setStatus("Order Created!");
 
-					// Set 201 Created status code in the response message.
-					exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 201);
-					// Set 'Location' header in the response message.
-					// This can be used by the client to locate the newly added order.
-					exchange.getOut().setHeader("Location", "http://localhost:8080/ordermgt/order/" + orderId);
-				}
-			}).doCatch(OrderValidationException.class).process(new Processor() {
+                    // Create response message.
+                    exchange.getOut().setBody(status, Status.class);
 
-				public void process(Exchange exchange) throws Exception {
+                    // Set 201 Created status code in the response message.
+                    exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 201);
+                    // Set 'Location' header in the response message.
+                    // This can be used by the client to locate the newly added order.
+                    exchange.getOut().setHeader("Location", "http://localhost:8080/ordermgt/order/" + orderId);
+                }
+            }).doCatch(OrderValidationException.class).process(new Processor() {
 
-					Status status = new Status();
-					status.setOrderId("null");
-					status.setStatus("Order Id is Null !!");
+                public void process(Exchange exchange) throws Exception {
 
-					// Create response message.
-					exchange.getOut().setBody(status, Status.class);
-					exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 400);
+                    Status status = new Status();
+                    status.setOrderId("null");
+                    status.setStatus("Order Id is Null !!");
 
-				}
-			}).log("AddOrder error : Invalid JSON recevied!").doCatch(Exception.class).process(new Processor() {
+                    // Create response message.
+                    exchange.getOut().setBody(status, Status.class);
+                    exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 400);
 
-				public void process(Exchange exchange) throws Exception {
-					if (exchange.getOut().getBody(Order.class) == null) {
-						Status status = new Status();
-						status.setOrderId("null");
-						status.setStatus("JSON payload is empty!");
+                }
+            }).log("AddOrder error : Invalid JSON recevied!").doCatch(Exception.class).process(new Processor() {
 
-						// Create response message.
-						exchange.getOut().setBody(status, Status.class);
-						exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 400);
-					}
+                public void process(Exchange exchange) throws Exception {
+                    if (exchange.getOut().getBody(Order.class) == null) {
+                        Status status = new Status();
+                        status.setOrderId("null");
+                        status.setStatus("JSON payload is empty!");
 
-				}
-			}).log("AddOrder error : JSON payload is empty!");
+                        // Create response message.
+                        exchange.getOut().setBody(status, Status.class);
+                        exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 400);
+                    }
 
-			// Resource that handles the HTTP GET requests that are directed to a specific
-			// order using path '/order/<orderId>'.
-			rest("/ordermgt").get("/order/{orderId}").to("direct:getOrder");
+                }
+            }).log("AddOrder error : JSON payload is empty!");
 
-			from("direct:getOrder").doTry().process(new Processor() {
+            // Resource that handles the HTTP GET requests that are directed to a specific
+            // order using path '/order/<orderId>'.
+            rest("/ordermgt").get("/order/{orderId}").to("direct:getOrder");
 
-				@Override
-				public void process(Exchange exchange) {
+            from("direct:getOrder").doTry().process(new Processor() {
 
-					// Find the requested order from the map and retrieve it in JSON format.
-					String orderId = exchange.getIn().getHeader("orderId", String.class);
-					Order order = objectmap.get(orderId);
+                @Override
+                public void process(Exchange exchange) {
 
-					if (order == null) {
+                    // Find the requested order from the map and retrieve it in JSON format.
+                    String orderId = exchange.getIn().getHeader("orderId", String.class);
+                    Order order = objectmap.get(orderId);
 
-						Status status = new Status();
-						status.setOrderId(orderId);
-						status.setStatus("Get order error : " + orderId + " cannot be found!");
+                    if (order == null) {
 
-						exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 400);
-					} else {
+                        Status status = new Status();
+                        status.setOrderId(orderId);
+                        status.setStatus("Get order error : " + orderId + " cannot be found!");
 
-						exchange.getOut().setBody(order, Order.class);
-						exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 200);
-					}
+                        exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 400);
+                    } else {
 
-				}
-			}).doCatch(Exception.class).process(new Processor() {
+                        exchange.getOut().setBody(order, Order.class);
+                        exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 200);
+                    }
 
-				public void process(Exchange exchange) throws Exception {
+                }
+            }).doCatch(Exception.class).process(new Processor() {
 
-					Status status = new Status();
-					status.setOrderId("null");
-					status.setStatus("Internal server error!");
+                public void process(Exchange exchange) throws Exception {
 
-					exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 500);
+                    Status status = new Status();
+                    status.setOrderId("null");
+                    status.setStatus("Internal server error!");
 
-				}
-			}).log("Get order error : error while processing getOrder");
+                    exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 500);
 
-			// Resource that handles the HTTP PUT requests that are directed to the path
-			// '/order/<orderId>' to update an existing Order.
-			rest("/ordermgt").consumes("application/json").put("/order/{orderId}").type(Order.class)
-					.to("direct:putOrder");
+                }
+            }).log("Get order error : error while processing getOrder");
 
-			from("direct:putOrder").doTry().process(new Processor() {
+            // Resource that handles the HTTP PUT requests that are directed to the path
+            // '/order/<orderId>' to update an existing Order.
+            rest("/ordermgt").consumes("application/json").put("/order/{orderId}").type(Order.class)
+                    .to("direct:putOrder");
 
-				@Override
-				public void process(Exchange exchange) {
+            from("direct:putOrder").doTry().process(new Processor() {
 
-					Order newOrder = exchange.getIn().getBody(Order.class);
-					// Find the requested order from the map and retrieve it in JSON format.
-					String orderId = exchange.getIn().getHeader("orderId", String.class);
-					Order oldOrder = objectmap.get(orderId);
-					if (oldOrder != null) {
+                @Override
+                public void process(Exchange exchange) {
 
-						// Updating existing order with the attributes of the updated order.
-						objectmap.replace(orderId, newOrder);
-						exchange.getOut().setBody(newOrder, Order.class);
-						exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 200);
-					} else {
+                    Order newOrder = exchange.getIn().getBody(Order.class);
+                    // Find the requested order from the map and retrieve it in JSON format.
+                    String orderId = exchange.getIn().getHeader("orderId", String.class);
+                    Order oldOrder = objectmap.get(orderId);
+                    if (oldOrder != null) {
 
-						Status status = new Status();
-						status.setOrderId(orderId);
-						status.setStatus("Update Order error : orderId cannot be found!");
-						exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 400);
-					}
+                        // Updating existing order with the attributes of the updated order.
+                        objectmap.replace(orderId, newOrder);
+                        exchange.getOut().setBody(newOrder, Order.class);
+                        exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 200);
+                    } else {
 
-				}
-			}).doCatch(Exception.class).process(new Processor() {
+                        Status status = new Status();
+                        status.setOrderId(orderId);
+                        status.setStatus("Update Order error : orderId cannot be found!");
+                        exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 400);
+                    }
 
-				public void process(Exchange exchange) throws Exception {
+                }
+            }).doCatch(Exception.class).process(new Processor() {
 
-					Status status = new Status();
-					status.setOrderId("null");
-					status.setStatus("Invalid JSON recevied!");
+                public void process(Exchange exchange) throws Exception {
 
-					exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 400);
+                    Status status = new Status();
+                    status.setOrderId("null");
+                    status.setStatus("Invalid JSON recevied!");
 
-				}
-			}).log("UpdateOrder error : Invalid JSON recevied!");
+                    exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 400);
 
-			// Resource that handles the HTTP DELETE requests, which are directed to the
-			// path
-			// '/order/<orderId>' to delete an existing Order.
-			rest("/ordermgt").delete("/order/{orderId}").to("direct:deleteOrder");
+                }
+            }).log("UpdateOrder error : Invalid JSON recevied!");
 
-			from("direct:deleteOrder").doTry().process(new Processor() {
+            // Resource that handles the HTTP DELETE requests, which are directed to the
+            // path
+            // '/order/<orderId>' to delete an existing Order.
+            rest("/ordermgt").delete("/order/{orderId}").to("direct:deleteOrder");
 
-				@Override
-				public void process(Exchange exchange) {
+            from("direct:deleteOrder").doTry().process(new Processor() {
 
-					// Find the requested order from the map and retrieve it in JSON format.
-					String orderId = exchange.getIn().getHeader("orderId", String.class);
-					Order oldOrder = objectmap.get(orderId);
-					if (oldOrder != null) {
+                @Override
+                public void process(Exchange exchange) {
 
-						// Updating existing order with the attributes of the updated order.
-						objectmap.remove(orderId);
-						Status status = new Status();
-						status.setOrderId(orderId);
-						status.setStatus("Order deleted!");
+                    // Find the requested order from the map and retrieve it in JSON format.
+                    String orderId = exchange.getIn().getHeader("orderId", String.class);
+                    Order oldOrder = objectmap.get(orderId);
+                    if (oldOrder != null) {
 
-						// Create response message.
-						exchange.getOut().setBody(status, Status.class);
-					} else {
+                        // Updating existing order with the attributes of the updated order.
+                        objectmap.remove(orderId);
+                        Status status = new Status();
+                        status.setOrderId(orderId);
+                        status.setStatus("Order deleted!");
 
-						Status status = new Status();
-						status.setOrderId(orderId);
-						status.setStatus("Delete Order error : orderId  cannot be found!");
+                        // Create response message.
+                        exchange.getOut().setBody(status, Status.class);
+                    } else {
 
-						exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 400);
-					}
+                        Status status = new Status();
+                        status.setOrderId(orderId);
+                        status.setStatus("Delete Order error : orderId  cannot be found!");
 
-				}
-			}).doCatch(Exception.class).process(new Processor() {
+                        exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 400);
+                    }
 
-				public void process(Exchange exchange) throws Exception {
+                }
+            }).doCatch(Exception.class).process(new Processor() {
 
-					Status status = new Status();
-					status.setOrderId("null");
-					status.setStatus("Internal server error!");
+                public void process(Exchange exchange) throws Exception {
 
-					exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 500);
+                    Status status = new Status();
+                    status.setOrderId("null");
+                    status.setStatus("Internal server error!");
 
-				}
-			}).log("Delete order error : error while processing deleteOrder");
+                    exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 500);
 
-		}
-	}
+                }
+            }).log("Delete order error : error while processing deleteOrder");
+
+        }
+    }
 
 }

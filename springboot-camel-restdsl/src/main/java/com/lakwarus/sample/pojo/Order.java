@@ -12,7 +12,7 @@ public class Order {
 		return id;
 	}
 
-	public void setId(String id) throws Exception{
+	public void setId(String id){
 		this.id = id;
 	}
 
