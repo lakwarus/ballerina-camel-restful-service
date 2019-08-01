@@ -475,11 +475,11 @@ listener http:Listener httpListener = new(8080);
 service orderMgt on httpListener {
 
 ```
-Ballerina comes with built-in annotation support. Here I have used `@http:ServiceConfig` aanotation to set based path of our rest service.
+Ballerina comes with built-in annotation support. Here I have used `@http:ServiceConfig` anotation to set based path of our rest service.
 
-A service can have any number of resource functions. We can implement the business logic of each resource depending on your requirements. For simplicity, I have used an in-memory map to keep all the order details.
+A service can have any number of resource functions. We can implement the business logic of each resource function depending on our requirements. For simplicity, I have used an in-memory map to keep all the order details.
 
-Following code block shows implementation of addOrder resource function. Here, you will see how certain HTTP status codes and headers are manipulated whenever required in addition to the order processing logic. I have used `@http:ResourceConfig` to set the resource path and the HTTP method.
+Following code block shows implementation of `addOrder` resource function. Here, you will see how certain HTTP status codes and headers are manipulated whenever required in addition to the order processing logic. I have used `@http:ResourceConfig` to set the resource path and the HTTP method.
 
 ```ballerina
 // Resource that handles the HTTP POST requests that are directed to the path
@@ -539,11 +539,11 @@ Following code block shows implementation of addOrder resource function. Here, y
     }
 ```
 
-Ballerina has a single type named json that can represent any JSON value. Thus, json is a built-in union type in Ballerina that can contain values of types nil (as the null value), boolean, int, float, decimal, string, json\[\] and map<json>. JSON is built-in type in Ballerina and it does not required any additional module to import.
+Ballerina has a single type named json that can represent any JSON value. Thus, json is a built-in union type in Ballerina that can contain values of types nil (as the null value), boolean, int, float, decimal, string, json\[\] and map<json>. Because JSON is built-in type, it does not required any additional module to import.
 	
-In Ballerina, errors can be returned or can cause abrupt completion via panic. In above code block errors are returned and logged.
+In Ballerina, errors can be returned or can cause abrupt completion via panic. In above code block, I returned errors and logged them.
 
-From [here](https://github.com/lakwarus/ballerina-camel-springboot-restful-microservice/blob/master/ballerina-restful-service/order_service.bal) you can find full source code of the order management service.
+[Here](https://github.com/lakwarus/ballerina-camel-springboot-restful-microservice/blob/master/ballerina-restful-service/order_service.bal), you can find full source code of the order management service
 
 ## Testing
 
