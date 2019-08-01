@@ -372,7 +372,7 @@ $ curl -v -X POST -d \
 #### Retrieve Order
 
 ```bash
-$ curl -v "http://localhost:9090/ordermgt/order/100500"
+$ curl -v "http://localhost:8080/ordermgt/order/100500"
 
 * TCP_NODELAY set
 * Connected to localhost (::1) port 8080 (#0)
@@ -393,8 +393,7 @@ $ curl -v "http://localhost:9090/ordermgt/order/100500"
 #### Update Order
 
 ```bash
-$ curl -X PUT -d '{ "ID": "100500", "Name": "XYZ", "Updated Description": "Sample order."}'' \
-    "http://localhost:8080/ordermgt/order/100500" -H "Content-Type:application/json"
+$ curl -X PUT -d '{ "ID": "100500", "Name": "XYZ", "Updated Description": "Sample order."}' http://localhost:8080/ordermgt/order/100500 -H "Content-Type:application/json" -v
 
 * TCP_NODELAY set
 * Connected to localhost (::1) port 8080 (#0)
@@ -418,7 +417,7 @@ $ curl -X PUT -d '{ "ID": "100500", "Name": "XYZ", "Updated Description": "Sampl
 #### Delete Order
 
 ```bash
-$ curl -X DELETE "http://localhost:9090/ordermgt/order/100500"
+$ curl -X DELETE "http://localhost:8080/ordermgt/order/100500" -v
 
 * TCP_NODELAY set
 * Connected to localhost (::1) port 8080 (#0)
@@ -543,10 +542,123 @@ Ballerina has a single type named json that can represent any JSON value. Thus, 
 	
 In Ballerina, errors can be returned or can cause abrupt completion via panic. In above code block, I returned errors and logged them.
 
-[Here](https://github.com/lakwarus/ballerina-camel-springboot-restful-microservice/blob/master/ballerina-restful-service/order_service.bal), you can find full source code of the order management service
+[Here](https://github.com/lakwarus/ballerina-camel-springboot-restful-microservice/blob/master/ballerina-restful-service/restful-service/order_service.bal), you can find full source code of the order management service
 
 ## Testing
 
+We can run the RESTful microservice that we developed above, in our local environment. Open the terminal execute the following command.
+
+```bash
+$ ballerina run restful-service
+```
+Successful startup of the service results in the following output.
+
+```bash
+ballerina: started publishing tracers to Jaeger on localhost:5775
+Initiating service(s) in '/Library/Ballerina/ballerina-0.991.0/lib/balx/prometheus/reporter.balx'
+[ballerina/http] started HTTP/WS endpoint 0.0.0.0:9797
+ballerina: started Prometheus HTTP endpoint 0.0.0.0:9797
+Initiating service(s) in 'restful-service'
+[ballerina/http] started HTTP/WS endpoint 0.0.0.0:8080
+```
+  
+To test the functionality of the orderMgt RESTFul service, send HTTP requests for each order management operation. Following are sample cURL commands that we can use to test each operation of the order management service.
+
+#### Create order
+
+```bash
+$ curl -v -X POST -d \
+    '{ "ID": "100500", "Name": "XYZ", "Description": "Sample order."}' \
+    "http://localhost:8080/ordermgt/order" -H "Content-Type:application/json"
+
+* TCP_NODELAY set
+* Connected to localhost (::1) port 8080 (#0)
+> POST /ordermgt/order HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/7.54.0
+> Accept: */*
+> Content-Type:application/json
+> Content-Length: 64
+> 
+* upload completely sent off: 64 out of 64 bytes
+< HTTP/1.1 400 Bad Request
+< content-type: application/json
+< content-length: 48
+< server: ballerina/0.991.0
+< date: Thu, 1 Aug 2019 11:47:00 -0700
+< 
+* Connection #0 to host localhost left intact
+{"status":"OrderId is Empty!", "orderId":"null"}
+```
+
+#### Retrieve Order
+
+```bash
+$ curl -v "http://localhost:8080/ordermgt/order/100500"
+
+* TCP_NODELAY set
+* Connected to localhost (::1) port 8080 (#0)
+> GET /ordermgt/order/100500 HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/7.54.0
+> Accept: */*
+> 
+< HTTP/1.1 200 OK
+< content-type: application/json
+< content-length: 55
+< server: ballerina/0.991.0
+< date: Thu, 1 Aug 2019 11:47:49 -0700
+< 
+* Connection #0 to host localhost left intact
+{"status":"Order cannot be found!", "orderId":"100500"}
+```
+
+#### Update Order
+
+```bash
+$ curl -X PUT -d '{ "ID": "100500", "Name": "XYZ", "Updated Description": "Sample order."}' http://localhost:8080/ordermgt/order/100500 -H "Content-Type:application/json" -v
+
+* TCP_NODELAY set
+* Connected to localhost (::1) port 8080 (#0)
+> PUT /ordermgt/order/100500 HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/7.54.0
+> Accept: */*
+> Content-Type:application/json
+> Content-Length: 72
+> 
+* upload completely sent off: 72 out of 72 bytes
+< HTTP/1.1 200 OK
+< content-type: application/json
+< content-length: 55
+< server: ballerina/0.991.0
+< date: Thu, 1 Aug 2019 11:50:53 -0700
+< 
+* Connection #0 to host localhost left intact
+{"status":"Order cannot be found!", "orderId":"100500"}
+```
+
+#### Delete Order
+
+```bash
+$ curl -X DELETE "http://localhost:8080/ordermgt/order/100500" -v
+
+* TCP_NODELAY set
+* Connected to localhost (::1) port 8080 (#0)
+> DELETE /ordermgt/order/100500 HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/7.54.0
+> Accept: */*
+> 
+< HTTP/1.1 200 OK
+< content-type: application/json
+< content-length: 55
+< server: ballerina/0.991.0
+< date: Thu, 1 Aug 2019 11:51:32 -0700
+< 
+* Connection #0 to host localhost left intact
+{"status":"Order cannot be found!", "orderId":"100500"}
+```
 
 ## Deployment
 # Summary
