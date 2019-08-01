@@ -11,30 +11,6 @@ map<json> ordersMap = {};
 @http:ServiceConfig { basePath: "/ordermgt" }
 service orderMgt on httpListener {
 
-    // Resource that handles the HTTP GET requests that are directed to a specific
-    // order using path '/order/<orderId>'.
-    @http:ResourceConfig {
-        methods: ["GET"],
-        path: "/order/{orderId}"
-    }
-    resource function getOrder(http:Caller caller, http:Request req, string orderId) {
-        // Find the requested order from the map and retrieve it in JSON format.
-        json payload = ordersMap[orderId];
-        http:Response response = new;
-        if (payload == null) {
-            payload = { status: "Order cannot be found!", orderId: orderId };
-        }
-
-        // Set the JSON payload in the outgoing response message.
-        response.setJsonPayload(untaint payload);
-
-        // Send response to the client.
-        var result = caller->respond(response);
-        if (result is error) {
-            log:printError("Error sending response", err = result);
-        }
-    }
-
     // Resource that handles the HTTP POST requests that are directed to the path
     // '/order' to create a new Order.
     @http:ResourceConfig {
@@ -84,6 +60,30 @@ service orderMgt on httpListener {
             json payload = { status: "Invalid JSON received!", orderId: "null" };
             response.setJsonPayload(payload);
         }
+        // Send response to the client.
+        var result = caller->respond(response);
+        if (result is error) {
+            log:printError("Error sending response", err = result);
+        }
+    }
+
+    // Resource that handles the HTTP GET requests that are directed to a specific
+    // order using path '/order/<orderId>'.
+    @http:ResourceConfig {
+        methods: ["GET"],
+        path: "/order/{orderId}"
+    }
+    resource function getOrder(http:Caller caller, http:Request req, string orderId) {
+        // Find the requested order from the map and retrieve it in JSON format.
+        json payload = ordersMap[orderId];
+        http:Response response = new;
+        if (payload == null) {
+            payload = { status: "Order cannot be found!", orderId: orderId };
+        }
+
+        // Set the JSON payload in the outgoing response message.
+        response.setJsonPayload(untaint payload);
+
         // Send response to the client.
         var result = caller->respond(response);
         if (result is error) {
