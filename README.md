@@ -452,7 +452,98 @@ TODO - Camek-K
 
 ## Setting up the project
 
+Ballerina project is a directory that atomically manages a collection of modules and programs. We can create a project from any folder by using following command.
+
+```bash
+ballerina init [-i]
+```
+
+The init command initializes a simple project with a module inside of it. If the folder where this command is run has Ballerina source files or subfolders, those will be placed into the new project.
+
+I have created `ballerina-restful-service` folder and initialized with ballerina init. `order_service.bal` is the source file of my order management application.
+
 ## Implementation
+
+Unlike Java, Ballerina source itself can import modules. Since I am going to create a HTTP Restful service I have imported the ballerina/http module. Endpoints and Services are first-class constructs in Ballerina. I have created `httpListener` endpoint and set listener port as 8080. Then I have created  `orderMgt` service and set it to listen on `httpListener` endpoint. 
+
+```ballerina
+import ballerina/http;
+
+listener http:Listener httpListener = new(8080);
+
+@http:ServiceConfig { basePath: "/ordermgt" }
+service orderMgt on httpListener {
+
+```
+Ballerina comes with built-in annotation support. Here I have used `@http:ServiceConfig` anotation to set based path of our rest service.
+
+A service can have any number of resource functions. We can implement the business logic of each resource function depending on our requirements. For simplicity, I have used an in-memory map to keep all the order details.
+
+Following code block shows implementation of `addOrder` resource function. Here, you will see how certain HTTP status codes and headers are manipulated whenever required in addition to the order processing logic. I have used `@http:ResourceConfig` to set the resource path and the HTTP method.
+
+```ballerina
+// Resource that handles the HTTP POST requests that are directed to the path
+    // '/order' to create a new Order.
+    @http:ResourceConfig {
+        methods: ["POST"],
+        path: "/order"
+    }
+    resource function addOrder(http:Caller caller, http:Request req) {
+        http:Response response = new;
+        var orderReq = req.getJsonPayload();
+        if (orderReq is json) {
+            
+            json orderIdJson = orderReq.id;
+            if (orderIdJson == null) {
+
+                // Create response message.
+                json payload = { status: "OrderId is Empty!", orderId: "null" };
+                response.statusCode = 400;
+                response.setJsonPayload(untaint payload);
+            } else {
+
+                string orderId = orderIdJson.toString();
+
+                // Find the duplicate orders
+                json existingOrder = ordersMap[orderId];
+
+                if (existingOrder == null) {
+                    ordersMap[orderId] = orderReq;
+
+                    // Create response message.
+                    json payload = { status: "Order Created.", orderId: orderId };
+                    response.setJsonPayload(untaint payload);
+
+                    // Set 201 Created status code in the response message.
+                    response.statusCode = 201;
+                    // Set 'Location' header in the response message.
+                    // This can be used by the client to locate the newly added order.
+                    response.setHeader("Location", "http://localhost:8080/ordermgt/order/" +
+                            orderId);
+                } else {
+                    response.statusCode = 500;
+                    json payload = { status: "Duplicate Order", orderId: orderId };
+                    response.setJsonPayload(untaint payload);
+                }
+            }
+        } else {
+            response.statusCode = 400;
+            json payload = { status: "Invalid JSON received!", orderId: "null" };
+            response.setJsonPayload(payload);
+        }
+        // Send response to the client.
+        var result = caller->respond(response);
+        if (result is error) {
+            log:printError("Error sending response", err = result);
+        }
+    }
+```
+
+Ballerina has a single type named json that can represent any JSON value. Thus, json is a built-in union type in Ballerina that can contain values of types nil (as the null value), boolean, int, float, decimal, string, json\[\] and map<json>. Because JSON is built-in type, it does not required any additional module to import.
+	
+In Ballerina, errors can be returned or can cause abrupt completion via panic. In above code block, I returned errors and logged them.
+
+[Here](https://github.com/lakwarus/ballerina-camel-springboot-restful-microservice/blob/master/ballerina-restful-service/order_service.bal), you can find full source code of the order management service
 
 ## Testing
 
