@@ -475,9 +475,11 @@ listener http:Listener httpListener = new(8080);
 service orderMgt on httpListener {
 
 ```
-A service can have any number of resource functions. We can implement the business logic of each resource depending on your requirements. 
+Ballerina comes with built-in annotation support. Here I have used `@http:ServiceConfig` aanotation to set based path of our rest service.
 
-following code block shows implementation of addOrder resource function.
+A service can have any number of resource functions. We can implement the business logic of each resource depending on your requirements. For simplicity, you can use an in-memory map to keep all the order details.
+
+following code block shows implementation of addOrder resource function. Here, you will see how certain HTTP status codes and headers are manipulated whenever required in addition to the order processing logic.
 
 ```ballerina
 // Resource that handles the HTTP POST requests that are directed to the path
