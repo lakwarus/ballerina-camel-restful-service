@@ -149,7 +149,7 @@ restConfiguration().component("servlet").bindingMode(RestBindingMode.json);
             });
 ```
 
-I have created two resources classes (Order.class and Status.class) which use to format incoming and outgoing POJOs to JSON format.  
+I have created two resources classes (Order.class and Status.class) which is used to format incoming and outgoing POJOs to JSON format.  
 
 ```java
 package com.lakwarus.sample.pojo;
@@ -219,9 +219,9 @@ The exception handling for Apache camel can be implemented in 2 ways.
 * Using Do Try block
 * Using OnException block
 
-The OnException applies to all the routes. I have defined OnException block as a separate block from the routes to handle exceptions on malform JSON requests and any other connection issues. 
+The OnException applies to all the routes. I have defined OnException block as a separate block from the routes to handle exceptions on malformed JSON requests and any other connection issues. 
 
-To complete our application let's look at how can add the camel route. Notice that in our REST service we route directly to a Camel endpoint using the to(). This is because the Rest DSL has a short-hand for routing directly to an endpoint using to(). An alternative is to embed a Camel route directly using route()
+To complete our application, let's look at how can add the camel route. Notice that in our REST service we route directly to a Camel endpoint using the to(). This is because the Rest DSL has a short-hand for routing directly to an endpoint using to(). An alternative is to embed a Camel route directly using route()
 
 Here is the full implementation of create order functionality.
 
