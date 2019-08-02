@@ -661,17 +661,50 @@ $ curl -X DELETE "http://localhost:8080/ordermgt/order/100500" -v
 ```
 
 ## Deployment
+
+## Comparison
+
+Both Camel+SpringBoot and Ballerina provide a very rich user experience to create Restful microservices. Both option has its own pros and cons. In this section I am trying to compare the experience I had with both options with this sample.
+
+#### Initializing the project:
+Both option has very simple flow to initialize a project.
+Camel+SpringBoot has its own tool (STS - eclipse based) and Ballerina provide plugin to existing tools.
+
+#### Dependency management:
+Camel+SpringBoot required dependency management by updating pom.xml and then import dependant packages in source.    
+But Ballerina has a very simple way of dependency management by just import dependency modules in the source.
+
+#### Initialize a Rest service:
+Camel+SpringBoot has multiple ways to initialize and implement a Rest service. Its give more flexibility to the developer to choose suitable solution. While this is a great flexibility, but its come with a complexity. I had to spend a significant amount of time to choose the best option suited for my application. But I could not come to a conclusion and then finally just use one option in my sample. 
+Service is a first class construct in Ballerina and its straightforward to initialize a Rest service. 
+
+#### Configure Rest API properties:
+Both Camel+SpringBoot and Ballerina provide a very simple way to set/define Rest API properties like endpoints, paths, methods, etc.
+
+#### JSON binding:
+Again, Camel+SpringBoot has multiple ways to bind JSON and which confused me for a while. Finally I used Beans option which is simplified the rest of my application.
+JSON data type is a built-in type in Ballerina and handling JSON is very simple and intuitive.
+
+#### Readability and structure of the code: 
+Ballerina has opinionated way to structure our code and it give consistent and provide very good readability. (eg. resource function has Rest API properties and business logic in a single structure and provide better readability)
+Camel+SpringBoot has more flexible on structure our code but some time its lead to less readability. 
+
+#### Error Handling: 
+Comparing both options, Ballerina error handling is more comprehensive and intuitive. In Ballerina all network related functionality returns errors and guide developers to explicitly handle errors. Which reduce many developer mistakes and runtime errors. 
+Camel+SpringBoot also has flexibility on error handling but guidedency is weak. This might let developer mistakes and finally it can be lead to runtime errors.  
+
+#### Community:
+Spring+Camel has a good amount of community and samples compared to Ballerina.   
+
+#### Graphical representation:
+TODO
+
+#### Cloud native deployments:
+TODO
+
+
 # Summary
 TODO 
-- Explain the Spring+Camel pain points of readability
-- Explain the Spring+Camel pain points of exception handling
-- Explain the Spring+Camel pain points of dependency management
-- Explain the Ballerina advantage of @Docker and @Kubernetes annotation
-- Explain the Ballerina advantage of JSON handling
-- Explain the Ballerina advantage of error handling
-- Explain the Ballerina advantage of sequence diagram
-- Explain Spring+Camel advantage/pain of multiple chose for REST DSL
-- Explain Spring+Camel advantage of available contents
 
 # References
 - http://www.javaoutofbounds.com/apache-camel-springboot-rest-api-example/
