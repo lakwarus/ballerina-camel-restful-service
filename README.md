@@ -474,7 +474,7 @@ listener http:Listener httpListener = new(8080);
 service orderMgt on httpListener {
 
 ```
-Ballerina comes with built-in annotation support. Here I have used `@http:ServiceConfig` anotation to set based path of our rest service.
+Ballerina comes with built-in annotation support. Here I have used `@http:ServiceConfig` annotation to set based path of our rest service.
 
 A service can have any number of resource functions. We can implement the business logic of each resource function depending on our requirements. For simplicity, I have used an in-memory map to keep all the order details.
 
