@@ -662,6 +662,8 @@ $ curl -X DELETE "http://localhost:8080/ordermgt/order/100500" -v
 
 ## Deployment
 
+TODO
+
 ## Comparison
 
 Both Camel+SpringBoot and Ballerina provide a very rich user experience to create Restful microservices. Both option has its own pros and cons. In this section I am trying to compare the experience I had with both options with this sample.
