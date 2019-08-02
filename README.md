@@ -287,7 +287,7 @@ Here is the full implementation of create order functionality.
 
 We can implement the business logic of each resource depending on our requirements. For simplicity, I used an in-memory map to keep all the order details. (In the real world we should use some Database service to store orders)
 
-For each induvidual route I have used Do Try blocks to handle exceptions. This approach is similar to the Java try catch block. So the thrown exception will be immediately caught and the message wont keep on retrying. Here I have defined a custom Camel exceptions to handle order validation based exceptions. We have to use multiple Do-Try blocks to handle specific type of exceptions.  
+For each individual route I have used Do Try blocks to handle exceptions. This approach is similar to the Java try catch block. So the thrown exception will be immediately caught and the message wont keep on retrying. Here I have defined a custom Camel exceptions to handle order validation based exceptions. We have to use multiple Do-Try blocks to handle specific types of exceptions.
 
 Following code block shows implementation of get order functionality.
 
@@ -338,7 +338,7 @@ Same way, I have implemented update-order and the delete-order functionalities a
 ## Testing
 We can run the RESTful microservice that we developed above, in our local environment. 
 
-Open SpringbootCamelRestdslApiApplication class and Run as Java Application or SpringBoot Application. Check the console tab for application build status. 
+Open SpringbootCamelRestdslApiApplication class and Run as a Java Application or SpringBoot Application. Check the console tab for application build status. 
 
 To test the functionality of the orderMgt RESTFul microservice, send HTTP requests for each order management operation. Following are sample cURL commands that you can use to test each operation of the order management service.
 
@@ -451,7 +451,7 @@ TODO - Camek-K
 
 ## Setting up the project
 
-Ballerina project is a directory that atomically manages a collection of modules and programs. We can create a project from any folder by using following command.
+Ballerina project is a directory that atomically manages a collection of modules and programs. We can create a project from any folder by using the following command.
 
 ```bash
 ballerina init [-i]
@@ -463,7 +463,7 @@ I have created `ballerina-restful-service` folder and initialized with ballerina
 
 ## Implementation
 
-Unlike Java, Ballerina source itself can import modules. Since I am going to create a HTTP Restful service I have imported the ballerina/http module. Endpoints and Services are first-class constructs in Ballerina. I have created `httpListener` endpoint and set listener port as 8080. Then I have created  `orderMgt` service and set it to listen on `httpListener` endpoint. 
+Unlike Java, Ballerina source itself can import modules. Since I am going to create an HTTP Restful service I have imported the ballerina/http module. Endpoints and Services are first-class constructs in Ballerina. I have created `httpListener` endpoint and set listener port as 8080. Then I have created  `orderMgt` service and set it to listen on `httpListener` endpoint. 
 
 ```ballerina
 import ballerina/http;
@@ -538,11 +538,11 @@ Following code block shows implementation of `addOrder` resource function. Here,
     }
 ```
 
-Ballerina has a single type named json that can represent any JSON value. Thus, json is a built-in union type in Ballerina that can contain values of types nil (as the null value), boolean, int, float, decimal, string, json\[\] and map<json>. Because JSON is built-in type, it does not required any additional module to import.
+Ballerina has a single type named json that can represent any JSON value. Thus, json is a built-in union type in Ballerina that can contain values of types nil (as the null value), boolean, int, float, decimal, string, json\[\] and map<json>. Because JSON is built-in type, it does not require any additional module to import.
 	
 In Ballerina, errors can be returned or can cause abrupt completion via panic. In above code block, I returned errors and logged them.
 
-[Here](https://github.com/lakwarus/ballerina-camel-springboot-restful-microservice/blob/master/ballerina-restful-service/restful-service/order_service.bal), you can find full source code of the order management service
+[Here](https://github.com/lakwarus/ballerina-camel-springboot-restful-microservice/blob/master/ballerina-restful-service/restful-service/order_service.bal), you can find the full source code of the order management service
 
 ## Testing
 
