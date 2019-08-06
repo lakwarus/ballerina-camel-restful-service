@@ -456,10 +456,17 @@ Note: I have tried to setup Camel-k but not have a luck. I tried with many relea
 Ballerina project is a directory that atomically manages a collection of modules and programs. We can create a project from any folder by using the following command.
 
 ```bash
-ballerina new restful-service
+$> ballerina new restful-service
+Created new ballerina project at restful-service
+
+Next:
+    Use `ballerina create` to create a ballerina module inside the project.
+$> cd restful-service
+$> ballerina create order_mgt
+Created new ballerina module at 'src/order_mgt'
 ```
 
-I have created `restful-service` project inside `ballerina-restful-service` folder. `order_service.bal` is the source file of my order management application.
+I have created `restful-service` project inside `ballerina-restful-service` folder. Then I create `order_mgt` module and create `order_service.bal` source file of my order management application.
 
 ## Implementation
 
@@ -542,7 +549,7 @@ Ballerina has a single type named json that can represent any JSON value. Thus, 
 	
 In Ballerina, errors can be returned or can cause abrupt completion via panic. In above code block, I returned errors and logged them.
 
-[Here](https://github.com/lakwarus/ballerina-camel-springboot-restful-microservice/blob/master/ballerina-restful-service/restful-service/src/order_service.bal), you can find the full source code of the order management service
+[Here](https://github.com/lakwarus/ballerina-camel-springboot-restful-microservice/blob/master/ballerina-restful-service/restful-service/src/order_mgt/order_service.bal), you can find the full source code of the order management service
 
 ## Testing
 
