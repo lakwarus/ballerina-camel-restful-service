@@ -23,7 +23,7 @@ service orderMgt on httpListener {
         if (orderReq is json) {
             
             json|error orderIdJson = orderReq.id;
-            if (orderIdJson == null) {
+            if (orderIdJson is error) {
 
                 // Create response message.
                 json payload = { status: "OrderId is Empty!", orderId: "null" };
@@ -74,6 +74,7 @@ service orderMgt on httpListener {
         path: "/order/{orderId}"
     }
     resource function getOrder(http:Caller caller, http:Request req, string orderId) {
+
         // Find the requested order from the map and retrieve it in JSON format.
         json payload = ordersMap[orderId];
         http:Response response = new;
@@ -145,11 +146,11 @@ service orderMgt on httpListener {
             _ = ordersMap.remove(orderId);
 
             json payload = { status: "Order removed!", orderId: orderId };
-            response.setJsonPayload(payload);
         }else {
             json payload = { status: "Order cannot be found!", orderId: orderId };
-            response.setJsonPayload(payload);
-        }
+        }        
+        
+        response.setJsonPayload(payload);
         // Send response to the client.
         var result = caller->respond(response);
         if (result is error) {
