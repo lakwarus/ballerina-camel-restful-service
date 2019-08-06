@@ -542,7 +542,7 @@ Ballerina has a single type named json that can represent any JSON value. Thus, 
 	
 In Ballerina, errors can be returned or can cause abrupt completion via panic. In above code block, I returned errors and logged them.
 
-[Here](https://github.com/lakwarus/ballerina-camel-springboot-restful-microservice/blob/master/ballerina-restful-service/restful-service/order_service.bal), you can find the full source code of the order management service
+[Here](https://github.com/lakwarus/ballerina-camel-springboot-restful-microservice/blob/master/ballerina-restful-service/restful-service/src/order_service.bal), you can find the full source code of the order management service
 
 ## Testing
 
