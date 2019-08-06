@@ -549,6 +549,8 @@ Ballerina has a single type named json that can represent any JSON value. Thus, 
 	
 In Ballerina, errors can be returned or can cause abrupt completion via panic. In above code block, I returned errors and logged them.
 
+TODO : write TEST
+
 [Here](https://github.com/lakwarus/ballerina-camel-springboot-restful-microservice/blob/master/ballerina-restful-service/restful-service/src/order_mgt/order_service.bal), you can find the full source code of the order management service
 
 ## Testing
@@ -556,17 +558,26 @@ In Ballerina, errors can be returned or can cause abrupt completion via panic. I
 We can run the RESTful microservice that we developed above, in our local environment. Open the terminal execute the following command.
 
 ```bash
-$ ballerina run src/order_service.bal
-```
-Successful startup of the service results in the following output.
+$> ballerina build
+Compiling source
+    lakmal/order_mgt:0.1.0
+Created target/balo/order_mgt-2019r3-any-0.1.0.balo
 
-```bash
-ballerina: started publishing tracers to Jaeger on localhost:5775
-Initiating service(s) in '/Library/Ballerina/ballerina-0.991.0/lib/balx/prometheus/reporter.balx'
-[ballerina/http] started HTTP/WS endpoint 0.0.0.0:9797
-ballerina: started Prometheus HTTP endpoint 0.0.0.0:9797
-Initiating service(s) in 'restful-service'
-[ballerina/http] started HTTP/WS endpoint 0.0.0.0:8080
+Running tests
+    lakmal/order_mgt:0.1.0
+I'm the before suite function!
+I'm the before function!
+I'm in test function!
+I'm the after function!
+I'm the after suite function!
+	1 passing
+	0 failing
+	0 skipped
+
+Generating executables
+target/bin/order_mgt-executable.jar
+$> ballerina run target/bin/order_mgt-executable.jar
+[ballerina/http] started HTTP/WS listener 0.0.0.0:8080
 ```
   
 To test the functionality of the orderMgt RESTFul service, send HTTP requests for each order management operation. Following are sample cURL commands that we can use to test each operation of the order management service.
