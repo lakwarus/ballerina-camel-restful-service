@@ -31,10 +31,7 @@ Here we will create a Camel REST microservice using REST DSL, further we will us
 - Maven 3.2+
 - Your favorite IDE, I have used Spring Tool Suite (STS)
 
-### Optional requirements
-- Docker
-- Kubernetes
-- TODO - Camel-K?
+NOTE : To reduce the length and the complecity of this repo/article, cloud native deployment comparison is discussing in [this](https://github.com/lakwarus/ballerina-camel-springboot-cloud-native-deployment) repo/article.
 
 ## Setting up the project
 Start with STS, first we need to create a maven project with dependencies. Project details I have used;
@@ -435,21 +432,12 @@ $ curl -X DELETE "http://localhost:8080/ordermgt/order/100500" -v
 {"status":"Order deleted!","orderId":"100500"}
 ```
 
-## Deployment
-TODO - Camek-K
-
-Note: I have tried to setup Camel-k but not have a luck. I tried with many release versions and spend significant time but could not properly install Camel-k. Lack of stability and documentation.
-
 # Ballerina
 
 ## Prerequisites
 
 - Ballerina Distribution
 - A Text Editor or an IDE. I have used VSCode with Ballerina VSCode plugin
-
-### Optional requirements
-- Docker
-- Kubernetes
 
 ## Setting up the project
 
@@ -678,10 +666,6 @@ $ curl -X DELETE "http://localhost:8080/ordermgt/order/100500" -v
 {"status":"Order cannot be found!", "orderId":"100500"}
 ```
 
-## Deployment
-
-TODO
-
 ## Comparison
 
 Both Camel+SpringBoot and Ballerina provide a very rich user experience to create Restful microservices. Both option has its own pros and cons. In this section I am trying to compare the experience I had with both options with this sample.
@@ -718,10 +702,6 @@ Spring+Camel has a good amount of community and samples compared to Ballerina.
 
 #### Graphical representation:
 TODO
-
-#### Cloud native deployments:
-TODO
-
 
 # Summary
 TODO 
