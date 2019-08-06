@@ -437,6 +437,7 @@ $ curl -X DELETE "http://localhost:8080/ordermgt/order/100500" -v
 
 ## Deployment
 TODO - Camek-K
+
 Note: I have tried to setup Camel-k but not have a luck. I tried with many release versions and spend significant time but could not properly install Camel-k. Lack of stability and documentation.
 
 # Ballerina
