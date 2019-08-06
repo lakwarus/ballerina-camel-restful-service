@@ -481,7 +481,7 @@ A service can have any number of resource functions. We can implement the busine
 Following code block shows implementation of `addOrder` resource function. Here, you will see how certain HTTP status codes and headers are manipulated whenever required in addition to the order processing logic. I have used `@http:ResourceConfig` to set the resource path and the HTTP method.
 
 ```ballerina
-// Resource that handles the HTTP POST requests that are directed to the path
+    // Resource that handles the HTTP POST requests that are directed to the path
     // '/order' to create a new Order.
     @http:ResourceConfig {
         methods: ["POST"],
@@ -492,13 +492,13 @@ Following code block shows implementation of `addOrder` resource function. Here,
         var orderReq = req.getJsonPayload();
         if (orderReq is json) {
             
-            json orderIdJson = orderReq.id;
-            if (orderIdJson == null) {
+            json|error orderIdJson = orderReq.id;
+            if (orderIdJson is error) {
 
                 // Create response message.
                 json payload = { status: "OrderId is Empty!", orderId: "null" };
                 response.statusCode = 400;
-                response.setJsonPayload(untaint payload);
+                response.setJsonPayload(payload);
             } else {
 
                 string orderId = orderIdJson.toString();
@@ -511,7 +511,7 @@ Following code block shows implementation of `addOrder` resource function. Here,
 
                     // Create response message.
                     json payload = { status: "Order Created.", orderId: orderId };
-                    response.setJsonPayload(untaint payload);
+                    response.setJsonPayload(payload);
 
                     // Set 201 Created status code in the response message.
                     response.statusCode = 201;
@@ -522,7 +522,7 @@ Following code block shows implementation of `addOrder` resource function. Here,
                 } else {
                     response.statusCode = 500;
                     json payload = { status: "Duplicate Order", orderId: orderId };
-                    response.setJsonPayload(untaint payload);
+                    response.setJsonPayload(payload);
                 }
             }
         } else {
@@ -535,7 +535,7 @@ Following code block shows implementation of `addOrder` resource function. Here,
         if (result is error) {
             log:printError("Error sending response", err = result);
         }
-    }
+    }	
 ```
 
 Ballerina has a single type named json that can represent any JSON value. Thus, json is a built-in union type in Ballerina that can contain values of types nil (as the null value), boolean, int, float, decimal, string, json\[\] and map<json>. Because JSON is built-in type, it does not require any additional module to import.
