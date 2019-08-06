@@ -675,8 +675,7 @@ Both option has very simple flow to initialize a project.
 Camel+SpringBoot has its own tool (STS - eclipse based) and Ballerina provide plugin to existing tools.
 
 #### Dependency management:
-Camel+SpringBoot required dependency management by updating pom.xml and then import dependant packages in source.    
-But Ballerina has a very simple way of dependency management by just import dependency modules in the source.
+Camel+SpringBoot required dependency management by updating pom.xml and then import dependant packages in source. Ballerina dependency management is very simple compared to Camel+SpringBoot. Just importing dependent modules in the source will works.
 
 #### Initialize a Rest service:
 Camel+SpringBoot has multiple ways to initialize and implement a Rest service. Its give more flexibility to the developer to choose suitable solution. While this is a great flexibility, but its come with a complexity. I had to spend a significant amount of time to choose the best option suited for my application. But I could not come to a conclusion and then finally just use one option in my sample. 
@@ -698,7 +697,7 @@ Comparing both options, Ballerina error handling is more comprehensive and intui
 Camel+SpringBoot also has flexibility on error handling but guidedency is weak. This might let developer mistakes and finally it can be lead to runtime errors.  
 
 #### Community:
-Spring+Camel has a good amount of community and samples compared to Ballerina.   
+Spring+Camel has a good amount of community samples compared to Ballerina.   
 
 #### Graphical representation:
 TODO
