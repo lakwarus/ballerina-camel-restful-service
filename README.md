@@ -31,7 +31,7 @@ Here we will create a Camel REST microservice using REST DSL, further we will us
 - Maven 3.2+
 - Your favorite IDE, I have used Spring Tool Suite (STS)
 
-NOTE : To reduce the length and the complecity of this repo/article, cloud native deployment comparison is discussing in [this](https://github.com/lakwarus/ballerina-camel-springboot-cloud-native-deployment) repo/article.
+NOTE : To reduce the length and the complecity of this repo/article, cloud native deployment comparison is done at [cloud native deployment - Ballerina vs Camel+SpringBoot](https://github.com/lakwarus/ballerina-camel-springboot-cloud-native-deployment) repo/article.
 
 ## Setting up the project
 Start with STS, first we need to create a maven project with dependencies. Project details I have used;
