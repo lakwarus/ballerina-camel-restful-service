@@ -454,12 +454,10 @@ TODO - Camek-K
 Ballerina project is a directory that atomically manages a collection of modules and programs. We can create a project from any folder by using the following command.
 
 ```bash
-ballerina init [-i]
+ballerina new restful-service
 ```
 
-The init command initializes a simple project with a module inside of it. If the folder where this command is run has Ballerina source files or subfolders, those will be placed into the new project.
-
-I have created `ballerina-restful-service` folder and initialized with ballerina init. `order_service.bal` is the source file of my order management application.
+I have created `restful-service` project inside `ballerina-restful-service` folder. `order_service.bal` is the source file of my order management application.
 
 ## Implementation
 
