@@ -549,7 +549,7 @@ In Ballerina, errors can be returned or can cause abrupt completion via panic. I
 We can run the RESTful microservice that we developed above, in our local environment. Open the terminal execute the following command.
 
 ```bash
-$ ballerina run restful-service
+$ ballerina run src/order_service.bal
 ```
 Successful startup of the service results in the following output.
 
