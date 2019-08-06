@@ -22,13 +22,13 @@ service orderMgt on httpListener {
         var orderReq = req.getJsonPayload();
         if (orderReq is json) {
             
-            json orderIdJson = orderReq.id;
+            json|error orderIdJson = orderReq.id;
             if (orderIdJson == null) {
 
                 // Create response message.
                 json payload = { status: "OrderId is Empty!", orderId: "null" };
                 response.statusCode = 400;
-                response.setJsonPayload(untaint payload);
+                response.setJsonPayload(payload);
             } else {
 
                 string orderId = orderIdJson.toString();
@@ -41,7 +41,7 @@ service orderMgt on httpListener {
 
                     // Create response message.
                     json payload = { status: "Order Created.", orderId: orderId };
-                    response.setJsonPayload(untaint payload);
+                    response.setJsonPayload(payload);
 
                     // Set 201 Created status code in the response message.
                     response.statusCode = 201;
@@ -52,7 +52,7 @@ service orderMgt on httpListener {
                 } else {
                     response.statusCode = 500;
                     json payload = { status: "Duplicate Order", orderId: orderId };
-                    response.setJsonPayload(untaint payload);
+                    response.setJsonPayload(payload);
                 }
             }
         } else {
@@ -82,7 +82,7 @@ service orderMgt on httpListener {
         }
 
         // Set the JSON payload in the outgoing response message.
-        response.setJsonPayload(untaint payload);
+        response.setJsonPayload(payload);
 
         // Send response to the client.
         var result = caller->respond(response);
@@ -106,21 +106,19 @@ service orderMgt on httpListener {
 
             // Updating existing order
             if (existingOrder != null) {
-                existingOrder.name = updatedOrder.name;
-                existingOrder.description = updatedOrder.description;
-                ordersMap[orderId] = existingOrder;
+                ordersMap[orderId] = updatedOrder;
 
                 json payload = { status: "Order updated", orderId: orderId };
-                response.setJsonPayload(untaint payload);
+                response.setJsonPayload(payload);
 
             } else {
                 json payload = { status: "Order cannot be found!", orderId: orderId };
-                response.setJsonPayload(untaint payload);
+                response.setJsonPayload(payload);
             }
         } else {
             response.statusCode = 400;
             json payload = { status: "Invalid JSON received!", orderId: "null" };
-            response.setJsonPayload(untaint payload);
+            response.setJsonPayload(payload);
         }
         var result = caller->respond(response);
         if (result is error) {
@@ -147,10 +145,10 @@ service orderMgt on httpListener {
             _ = ordersMap.remove(orderId);
 
             json payload = { status: "Order removed!", orderId: orderId };
-            response.setJsonPayload(untaint payload);
+            response.setJsonPayload(payload);
         }else {
             json payload = { status: "Order cannot be found!", orderId: orderId };
-            response.setJsonPayload(untaint payload);
+            response.setJsonPayload(payload);
         }
         // Send response to the client.
         var result = caller->respond(response);
