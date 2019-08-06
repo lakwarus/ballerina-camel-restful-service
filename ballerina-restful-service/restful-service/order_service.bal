@@ -146,11 +146,13 @@ service orderMgt on httpListener {
             _ = ordersMap.remove(orderId);
 
             json payload = { status: "Order removed!", orderId: orderId };
+            response.setJsonPayload(payload);
         }else {
             json payload = { status: "Order cannot be found!", orderId: orderId };
+            response.setJsonPayload(payload);
+
         }        
-        
-        response.setJsonPayload(payload);
+
         // Send response to the client.
         var result = caller->respond(response);
         if (result is error) {
