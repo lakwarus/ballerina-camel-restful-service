@@ -5,7 +5,7 @@
 A microservice, based on REST is called a **RESTful** microservice. REST is not dependent on any protocol, but almost every RESTful service uses HTTP as its underlying protocol. It's also very popular in modern API oriented application development.
 
 In this article, I will be discussing 2 different technologies to implement a RESTful microservice and discuss the pros and cons of both approaches. Two technologies which I am going to use;
- 1. SpringBoot with Apache Camel
+ 1. Apache Camel+SpringBoot
  2. Ballerina
 
 [**SpringBoot**](https://spring.io/projects/spring-boot) is an organized Java framework for building microservices-based on the Spring Dependency Injection framework with minimal code and configuration and allows packaging them into an isolated executable jar giving you production-ready microservices. [**Apache Camel**](https://camel.apache.org/) is a routing engine which provides an implementation for almost all Enterprise Integration Patterns with many different components to facilitate integration with various systems.
