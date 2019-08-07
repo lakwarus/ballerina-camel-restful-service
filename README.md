@@ -703,8 +703,6 @@ Camel+SpringBoot also has flexibility on error handling but guidedency is weak. 
 #### Community:
 Spring+Camel has a good amount of community samples compared to Ballerina.   
 
-#### Graphical representation:
-TODO
 
 # Summary
 TODO 
