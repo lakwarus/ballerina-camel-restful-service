@@ -23,7 +23,7 @@ The following diagram illustrates all the required functionality of the Order Ma
 
 ![order mgt](https://github.com/lakwarus/ballerina-camel-springboot-restful-service/blob/master/images/Order-mgt.png)
 
-NOTE : To reduce length and complecity of this repo/article, cloud native deployment comparison is done at [Cloud Native deployment - Ballerina vs Camel+SpringBoot](https://github.com/lakwarus/ballerina-camel-springboot-cloud-native-deployment) repo/article.
+NOTE : To reduce the length and complexity of this repo/article, cloud native deployment comparison is done at [Cloud Native deployment - Ballerina vs Camel+SpringBoot](https://github.com/lakwarus/ballerina-camel-springboot-cloud-native-deployment) repo/article.
 
 # Apache Camel+SpringBoot
 Here we will create a Camel REST microservice using REST DSL, further we will use Camel Servlet to expose the REST API.
@@ -108,7 +108,7 @@ Apache Camel offers a REST styled DSL which can be used with Java or XML. The in
 - camel-spark-rest (also supports Swagger Java from Camel 2.17)
 - camel-undertow (also supports Swagger Java from Camel 2.17)
 
-I have used camel-servlet REST DSL which acts as facade for REST endpoints.
+I have used camel-servlet REST DSL which acts as a facade for REST endpoints.
 
 Camel has a way to set CamelServlet registration from Camel version 2.19.0. It is default registered at “/camel” endpoint which you can optionally overwrite. I have overwritten it to /*. Edit src/main/resources/application.properties and add the below property.
 
@@ -332,7 +332,7 @@ Following code block shows implementation of get order functionality.
 
 Same way, I have implemented update-order and the delete-order functionalities and full source code of the application can be found [here](https://github.com/lakwarus/ballerina-camel-springboot-restful-microservice/blob/master/springboot-camel-restdsl/src/main/java/com/lakwarus/sample/pojo/SpringbootCamelRestdslApplication.java). 
 
-Note: writting unit tests and comparision will discuss in seperate article.
+Note: writing unit tests and comparison will discuss in separate article.
 
 ## Testing
 We can run the RESTful microservice that we developed above, in our local environment. 
@@ -537,13 +537,11 @@ Following code block shows implementation of `addOrder` resource function. Here,
 
 Ballerina has a single type named json that can represent any JSON value. Thus, json is a built-in union type in Ballerina that can contain values of types nil (as the null value), boolean, int, float, decimal, string, json\[\] and map<json>. Because JSON is built-in type, it does not require any additional module to import.
 	
-In Ballerina, errors can be returned or can cause abrupt completion via panic. In above code block, I returned errors and logged them.
-
-TODO : write TEST
+In Ballerina, errors can be returned or can cause abrupt completion via panic. In the above code block, I returned errors and logged them.
 
 [Here](https://github.com/lakwarus/ballerina-camel-springboot-restful-microservice/blob/master/ballerina-restful-service/restful-service/src/order_mgt/order_service.bal), you can find the full source code of the order management service
 
-Note: writting unit tests and comparision will discuss in seperate article.
+Note: writing unit tests and comparison will discuss in separate article.
 
 ## Testing
 
@@ -554,17 +552,6 @@ $> ballerina build
 Compiling source
     lakmal/order_mgt:0.1.0
 Created target/balo/order_mgt-2019r3-any-0.1.0.balo
-
-Running tests
-    lakmal/order_mgt:0.1.0
-I'm the before suite function!
-I'm the before function!
-I'm in test function!
-I'm the after function!
-I'm the after suite function!
-	1 passing
-	0 failing
-	0 skipped
 
 Generating executables
 target/bin/order_mgt-executable.jar
@@ -679,7 +666,7 @@ Both option has very simple flow to initialize a project.
 Camel+SpringBoot has its own tool (STS - eclipse based) and Ballerina provide plugin to existing tools.
 
 #### Dependency management:
-Camel+SpringBoot required dependency management by updating pom.xml and then import dependant packages in source. Ballerina dependency management is very simple compared to Camel+SpringBoot. Just importing dependent modules in the source will works.
+Camel+SpringBoot required dependency management by updating pom.xml and then import dependant packages in source. Ballerina dependency management is very simple compared to Camel+SpringBoot. Just importing dependent modules in the source will work.
 
 #### Initialize a Rest service:
 Camel+SpringBoot has multiple ways to initialize and implement a Rest service. Its give more flexibility to the developer to choose suitable solution. While this is a great flexibility, but its come with a complexity. I had to spend a significant amount of time to choose the best option suited for my application. But I could not come to a conclusion and then finally just use one option in my sample. 
@@ -706,11 +693,11 @@ Spring+Camel has a good amount of community samples compared to Ballerina.
 
 # Summary
 
-* This article mainly compared Apache Camel+SpringBoot with Ballerina context of creating restfull microservices. 
-Comparision was carried out by implementing real world sample by using borth technologies.
+* This article mainly compared Apache Camel+SpringBoot with Ballerina context of creating restful microservices. 
 
-* In the context of restfull microservices, Ballerina has advantage over Apache Camel+SpringBoot due to Ballerina language design by ground up for network distributed application.
- 
+* Comparison was carried out by implementing real world sample by using both technologies.
+
+* In the context of restful microservices, Ballerina has advantage over Apache Camel+SpringBoot due to that Ballerina language design from the ground up for network distributed application.
 
 # References
 - http://www.javaoutofbounds.com/apache-camel-springboot-rest-api-example/
