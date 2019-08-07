@@ -1,4 +1,4 @@
-# RESTful Microservice : Apache Camel+SpringBoot Vs Ballerina
+# RESTful Microservices : Apache Camel+SpringBoot Vs Ballerina
 
 **REST** stands for Representational State Transfer, which is an architectural style for developing web services. **Microservices** - also known as the microservice architecture - is an architectural style that structures an application as a collection of services that are. Highly maintainable and testable. Loosely coupled. Independently deployable. Organized around business capabilities.
 
@@ -332,6 +332,8 @@ Following code block shows implementation of get order functionality.
 
 Same way, I have implemented update-order and the delete-order functionalities and full source code of the application can be found [here](https://github.com/lakwarus/ballerina-camel-springboot-restful-microservice/blob/master/springboot-camel-restdsl/src/main/java/com/lakwarus/sample/pojo/SpringbootCamelRestdslApplication.java). 
 
+Note: writting unit tests and comparision will discuss in seperate article.
+
 ## Testing
 We can run the RESTful microservice that we developed above, in our local environment. 
 
@@ -540,6 +542,8 @@ In Ballerina, errors can be returned or can cause abrupt completion via panic. I
 TODO : write TEST
 
 [Here](https://github.com/lakwarus/ballerina-camel-springboot-restful-microservice/blob/master/ballerina-restful-service/restful-service/src/order_mgt/order_service.bal), you can find the full source code of the order management service
+
+Note: writting unit tests and comparision will discuss in seperate article.
 
 ## Testing
 
