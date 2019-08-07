@@ -443,7 +443,7 @@ $ curl -X DELETE "http://localhost:8080/ordermgt/order/100500" -v
 
 ## Setting up the project
 
-Ballerina project is a directory that atomically manages a collection of modules and programs. We can create a project from any folder by using the following command.
+Ballerina project is a directory that atomically manages a collection of modules and programs. We can create a project by using the following command.
 
 ```bash
 $> ballerina new restful-service
@@ -456,7 +456,7 @@ $> ballerina create order_mgt
 Created new ballerina module at 'src/order_mgt'
 ```
 
-I have created `restful-service` project inside `ballerina-restful-service` folder. Then I create `order_mgt` module and create `order_service.bal` source file of my order management application.
+I have created restful-service project inside ballerina-restful-service folder. Then I create order_mgt module and create order_service.bal source file for my order management application.
 
 ## Implementation
 
