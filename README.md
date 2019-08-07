@@ -8,9 +8,9 @@ In this article, I will be discussing 2 different technologies to implement a RE
  1. SpringBoot with Apache Camel
  2. Ballerina
 
-**SpringBoot** is an organized Java framework for building microservices-based on the Spring Dependency Injection framework with minimal code and configuration and allows packaging them into an isolated executable jar giving you production-ready microservices. **Apache Camel** is a routing engine which provides an implementation for almost all Enterprise Integration Patterns with many different components to facilitate integration with various systems.
+[**SpringBoot**](https://spring.io/projects/spring-boot) is an organized Java framework for building microservices-based on the Spring Dependency Injection framework with minimal code and configuration and allows packaging them into an isolated executable jar giving you production-ready microservices. [**Apache Camel**](https://camel.apache.org/) is a routing engine which provides an implementation for almost all Enterprise Integration Patterns with many different components to facilitate integration with various systems.
 
-**Ballerina** is a programming language to create network-distributed applications. It is not a DSL but it’s a full programming language with a rich set of general-purpose features which is optimized for “network distributed applications”
+[**Ballerina**](https://ballerina.io) is a programming language to create network-distributed applications. It is not a DSL but it’s a full programming language with a rich set of general-purpose features which is optimized for “network distributed applications”
 
 # What we’ll build
 To understand how we can build a RESTful microservice, let’s consider a real-world use case of an order management scenario of an online retail application. Following list covers all functionalities in an order management system.
