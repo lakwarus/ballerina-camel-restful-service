@@ -42,14 +42,14 @@ public class SpringbootCamelRestdslApplication {
                     if (ex instanceof JsonEOFException) {
                         Status status = new Status();
                         status.setOrderId("null");
-                        status.setStatus("Malformed JSON recevied");
+                        status.setStatus("Malformed JSON received");
 
                         // Create response message.
                         exchange.getOut().setBody(status, Status.class);
                     } else {
                         Status status = new Status();
                         status.setOrderId("null");
-                        status.setStatus(" Error occured while proceesing the request !!!");
+                        status.setStatus(" Error occurred while processing the request !!!");
 
                         // Create response message.
                         exchange.getOut().setBody(status, Status.class);
