@@ -1,4 +1,4 @@
-# RESTful Microservice
+# RESTful Microservice : Apache Camel+SpringBoot Vs Ballerina
 
 **REST** stands for Representational State Transfer, which is an architectural style for developing web services. **Microservices** - also known as the microservice architecture - is an architectural style that structures an application as a collection of services that are. Highly maintainable and testable. Loosely coupled. Independently deployable. Organized around business capabilities.
 
@@ -25,7 +25,7 @@ The following diagram illustrates all the required functionality of the Order Ma
 
 NOTE : To reduce length and complecity of this repo/article, cloud native deployment comparison is done at [Cloud Native deployment - Ballerina vs Camel+SpringBoot](https://github.com/lakwarus/ballerina-camel-springboot-cloud-native-deployment) repo/article.
 
-# SpringBoot with Apache Camel
+# Apache Camel+SpringBoot
 Here we will create a Camel REST microservice using REST DSL, further we will use Camel Servlet to expose the REST API.
 
 ## Prerequisites
