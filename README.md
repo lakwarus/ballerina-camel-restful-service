@@ -705,7 +705,12 @@ Spring+Camel has a good amount of community samples compared to Ballerina.
 
 
 # Summary
-TODO 
+
+* This article mainly compared Apache Camel+SpringBoot with Ballerina context of creating restfull microservices. 
+Comparision was carried out by implementing real world sample by using borth technologies.
+
+* In the context of restfull microservices, Ballerina has advantage over Apache Camel+SpringBoot due to Ballerina language design by ground up for network distributed application.
+ 
 
 # References
 - http://www.javaoutofbounds.com/apache-camel-springboot-rest-api-example/
